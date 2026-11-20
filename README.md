@@ -11,13 +11,13 @@ An annotated map of the architecture of the Lean 4 source tree, published with L
 
 ## What the article covers
 
-1. What `Main.lean` exports, and the short classical reductions that bring all five exported theorems (RH, GRH for Dirichlet L-functions in three forms) down to one proposition: no Dirichlet L-function vanishes on Re s > 1/2.
-2. The layer of "literature" statements at the top. The tree proves these statements itself; it does not assume them.
+1. What `Main.lean` exports, and the short classical reductions that bring all five exported theorems (RH, GRH for Dirichlet L-functions in three forms) down to one proposition: no Dirichlet L-function vanishes on Re s > 1/2 (except at s = 1 for principal characters).
+2. How the fields of the "literature" structure at the top are supplied: the final construction fills them with declarations of the tree itself.
 3. The analytic half. A weighted prime sum built from Σ Λ(n)(x/n − 1) − x log x + (1+γ)x, its explicit formula, and a Landau-type criterion that turns a one-sided square-root bound on sparse windows of scales into a zero-free half-plane.
 4. The window bound. Length estimates for Ш¹ of the Tate twists Q_ℓ/Z_ℓ(−e) over fields cut out of cyclotomic fields.
-5. The automorphic half. The tree states and proves three deep inputs:
-   - Galois representations attached to polarized regular algebraic cuspidal representations over CM fields;
-   - the local Langlands correspondence for GL_n;
+5. The automorphic half. The source supplies declarations and proof bodies for three deep inputs:
+   - statements on Galois representations attached to polarized regular algebraic cuspidal representations over CM fields;
+   - a form of the local Langlands correspondence for GL_n;
    - global theta lifts between unitary groups in a stable range.
 
    For each input, the article says which published theorems it resembles.
@@ -30,7 +30,7 @@ An annotated map of the architecture of the Lean 4 source tree, published with L
 Every mathematical claim in the article carries one of four labels:
 
 - **classical**: a published theorem or standard fact, with a citation.
-- **Lean (file:line)**: the source contains a theorem or definition with this statement at this location. For theorems this means *stated and proved in the source, as written*. The kernel check of the tree had not finished when this version was written (see below).
+- **Lean (file:line)**: the source contains a statement or definition at this location. Where the article discusses a proof body, the label refers to the body as written. The build, axiom check and kernel replay of the tree were in progress when this version was written (see below).
 - **remark**: the author's own description in the note.
 - **interpretation**: our reading of a Lean statement, or of which published result it corresponds to. Declaration names are suggestive, but they are not evidence.
 
