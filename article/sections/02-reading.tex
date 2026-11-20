@@ -1,0 +1,41 @@
+\section{What this article is, and how to read it}\label{sec:reading}
+
+\paragraph{Object.} The object is the Lean~4 source tree \cite{alpotree} (Lean v4.33.1, Mathlib at
+commit \texttt{0df444a3}), identified by the SHA-256 hash of its archive. It has 175{,}187
+\texttt{.lean} files in ten libraries (Appendix~\ref{app:libraries}); the root file
+\leanlocx{src/Main.lean}{1} exports five theorems. The accompanying note \cite{remark} gives a
+timeline of twenty ideas (``items 1--20''), which \S\ref{sec:remark} maps to the source.
+
+\paragraph{Status labels.} Every mathematical claim carries one of four labels.
+\begin{description}[font=\normalfont]
+\item[\sttag{classical}] a published theorem or a standard fact, with a citation.
+\item[\sttag{Lean: file:line}] identifies a statement or definition in the source at this
+  location. Where we discuss a proof body, the label refers to the body as written. The build,
+  axiom check and kernel replay are in progress (\S\ref{sec:verification}).
+\item[\sttag{remark, item $n$}] the author's own description in the note.
+\item[\sttag{interpretation}] our reading: what a Lean statement means, or which published theorem
+  it corresponds to. Lean declaration names are suggestive (the source has names such as
+  \texttt{caraianiLocalGlobalDual} and \texttt{Green}) but they are not evidence; our
+  interpretations rest on the quoted statements, and remain interpretations.
+\end{description}
+File paths are relative to the tree's \texttt{src/} directory and line numbers refer to the archive
+with the hash above.
+
+\paragraph{Quotations.} Lean statements are printed in framed boxes headed ``Source: file:line''.
+Their text is produced by a script from the source, not typed: a theorem is quoted up to its
+\texttt{:=} (the proof is elided as \texttt{:= …}), and a definition or structure is quoted with its
+body. A checking script (Appendix~\ref{app:method}) regenerates every quotation and fails if any
+box differs from the source, if a cited line does not start a declaration, or if a declaration name
+in the text does not exist in the tree.
+
+\paragraph{What the article does not do.} It does not judge whether the proof is correct; the
+kernel check decides that. It does not trace the source to the bottom: the map follows the proof
+from \texttt{Main.lean} downward for six to seven levels, until each branch reaches a named
+theorem whose statement can be read on its own. The article compares the input statements reached
+on those branches with results from the literature.
+
+\paragraph{Notation.} $\chi$ and $\psi$ are Dirichlet characters; $L(s,\chi)$ is Mathlib's
+\mathlib{DirichletCharacter.LFunction}, the meromorphic continuation of
+$\sum_{n\ge1}\chi(n)n^{-s}$; $\Lambda$ is the von Mangoldt function; $\gamma$ is Euler's constant.
+For a number field $E$, $\mathcal O_E$ is its ring of integers; for a CM field $E$, $E^+$ is its
+maximal totally real subfield.

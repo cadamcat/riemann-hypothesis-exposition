@@ -1,0 +1,54 @@
+\section{The architecture below Statement~\ref{st:every}}\label{sec:architecture}
+
+\subsection{The last step}
+
+The file \texttt{CharacterBoxes/MainConclusion.lean} (14 lines) proves Statement~\ref{st:every}:
+\leanquote{UpperTheory.FinalTheorems.everyCharacter_of_row}
+\leanquote{UpperTheory.FinalTheorems.everyCharacter}
+\noindent The first theorem takes one hypothesis, a proposition \lean{UpperTheory.GalStar.Row0b}
+about Galois representations (\S\ref{sec:galois}), and uses it three times: twice inside a structure
+of ``literature statements'' and once to produce a window bound \lean{UpperTheory.Top.VWin}
+(\S\ref{sec:window}). The second theorem discharges the hypothesis with a theorem of the tree,
+\lean{UpperTheory.Gal.Int.galoisLocalGlobalStrong_recParameter}.
+
+\subsection{How the literature fields are supplied}
+
+The structure has three fields:
+\leanquote{UpperTheory.LiteratureTheorems.OpenLiteratureStatements}
+\noindent The first and third fields are the same proposition \lean{UpperTheory.One.M.Row}, which
+unfolds to \lean{UpperTheory.GalStar.Row0b} with the local Langlands notion \lean{UpperTheory.Zero.LLC.IsRecT}
+\stl{src/Development/AutomorphicArithmetic/Foundations/UnitarySphericalFixing/SatakeParameters/RecT.lean}{6};
+the second is the local Langlands correspondence \lean{UpperTheory.Zero.LLC.RecTExists}
+(\S\ref{sec:llc}). At \leanlocx{src/Development/AutomorphicArithmetic/CharacterBoxes/MainConclusion.lean}{8}
+the structure is filled with $\langle h,\ \texttt{recTExists},\ h\rangle$, where $h$ is the
+hypothesis of the first theorem and \lean{UpperTheory.Zero.LLC.recTExists} is a theorem of the tree.
+
+The file declaring this structure contains 195 declarations taking
+\texttt{O : OpenLiteratureStatements}. The names of 176 end in \texttt{\_of\_literature}, and many
+name published results (Howe duality, the Siegel--Weil formula, the Rallis inner product formula,
+Casselman--Wallach, Bernstein--Zelevinsky, Chebotarev, Poitou--Tate, and so on). The textual
+dependency check (Appendix~\ref{app:method}) finds 13 declarations that reach a field of
+\texttt{O}, directly or through another declaration in the file; for instance,
+\lean{UpperTheory.LiteratureTheorems.local_langlands_recT_exists_of_literature} returns the field
+\texttt{O.localLanglandsExists}. The other declarations cite results proved elsewhere in the tree.
+For example, the body of
+\leanquote{UpperTheory.LiteratureTheorems.logDerivOne}
+\noindent (elided in the quotation) is \lean{GlobalTheory.LogDerOneProof.logDerOne_holds}. The
+final construction supplies the first and third fields with the same Galois-representation
+declaration and the middle field with \lean{UpperTheory.Zero.LLC.recTExists}.
+
+\subsection{The map}
+
+Figure~\ref{fig:top} shows the top of the proof. Arrows point from a statement to the statements
+its proof uses. The left column is the analytic half (\S\ref{sec:analytic}); the right column is the
+automorphic half (\S\ref{sec:window}--\ref{sec:automorphic}); \S\ref{sec:connection} explains the
+crossings.
+
+\begin{figure}[ht]
+\centering
+\input{figures/topdeps}
+\caption{The top of the proof of \lean{riemannHypothesis}. Boxes are Lean declarations
+(abbreviated); solid boxes are theorems, dashed boxes are definitions. Every node is quoted or cited
+with file:line in the text.}
+\label{fig:top}
+\end{figure}

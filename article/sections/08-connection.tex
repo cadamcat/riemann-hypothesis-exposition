@@ -1,0 +1,35 @@
+\section{How the two halves connect}\label{sec:connection}
+
+The analytic half needs, for each primitive $\psi$, level-compatible, chain-tied families on windows
+(\S\ref{sec:analytic}). The automorphic half provides them through two channels, and the
+Galois-representation theorem (Statement~\ref{st:row}) feeds both.
+
+\begin{enumerate}
+\item \emph{Supply channel.} Statement~\ref{st:row} $\Rightarrow$ the window bound
+  (Statement~\ref{st:vwin}, through \lean{UpperTheory.One.vwin_of_row}) $\Rightarrow$
+  \texttt{HostExW (3/2)} for \lean{UpperTheory.Top.GChi} $\psi$ (\lean{UpperTheory.Top.supplyChi}).
+  The requirement \texttt{GChi ψ} asks for families whose fields satisfy the Sha-length bound
+  \lean{UpperTheory.Top.VVle}, so the arithmetic input is the bound on
+  $\text{Ш}^1(\mathbb Q_\ell/\mathbb Z_\ell(-e))$ over the fields of type \texttt{IsChiField}.
+\item \emph{Connectedness channel.} Statement~\ref{st:row} (as the fields of
+  \lean{UpperTheory.LiteratureTheorems.OpenLiteratureStatements}) and the local Langlands
+  correspondence $\Rightarrow$ the theta-integral hypotheses $\Rightarrow$
+  \lean{UpperTheory.Top.TopG} (with Green's theorem, \S\ref{sec:thetaside}).
+\item \emph{Both meet} in \lean{UpperTheory.Top.zeroFreeAll_of_topG} at scale $\frac32$. It
+  obtains level-compatible, chain-tied families on windows and applies the conditional bound
+  (\lean{UpperTheory.Comparison₂.level_gm_le_on_family_scales}) and the Landau-type criterion
+  (Statement~\ref{st:landau}).
+\end{enumerate}
+
+\noindent In the tree, then, the Riemann hypothesis for $\zeta$ is not proved separately from the
+Dirichlet case: it is the case $\psi=1$ of a statement about all primitive characters, whose proof
+for each $\psi$ involves auxiliary number fields depending on $\psi$, Galois cohomology of those
+fields, and automorphic representations of unitary groups over CM fields.
+
+Where in this architecture the note's central idea sits---a Stepanov-type ``multiplicity'' obtained
+from a chain of about $\sqrt X$ theta lifts \sta{8}---we can say only this much: the single-lift
+theorem (Statement~\ref{st:tlift}) feeds the Galois-representation theorem, and the predicate
+\lean{Formalism.MainNotions.ChainTied} that the analytic half needs refers to an ``$L$-function
+chain''. Locating the iteration and the choice of its length in the source is left open; the names
+\texttt{IteratedLiftChains} and \texttt{ThetaChain} occur in module and declaration names
+(\S\ref{sec:remark}).

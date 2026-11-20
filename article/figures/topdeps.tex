@@ -1,0 +1,40 @@
+% Dependency diagram of the top levels (names abbreviated; full names and file:line in the text).
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize\ttfamily, align=center},
+  thm/.style={draw, rounded corners=2pt, inner sep=2.5pt, minimum height=5mm},
+  df/.style={draw, dashed, rounded corners=2pt, inner sep=2.5pt, minimum height=5mm},
+  ->, >={Stealth[length=1.6mm]}, node distance=4.5mm and 6mm]
+\node[thm] (rh) {riemannHypothesis\\(Main.lean)};
+\node[thm, below=of rh] (every) {FinalTheorems.everyCharacter\\$\vdash$ EveryCharacter (Statement 3.1)};
+\node[thm, below=of every] (lit) {every\_character\_of\_literature\_of\_vWin\\(O : OpenLiteratureStatements) (hV : VWin)};
+\node[thm, below=of lit] (theta) {every\_character\_of\_theta\_integrals\_local\_matching};
+\node[thm, below=of theta] (imp) {Top.imprimitive $\circ$ zero\_free\_all\_of\_green\_v\_win\\ZeroFreeAll $\Rightarrow$ EveryCharacter};
+\node[thm, below left=6mm and -14mm of imp] (topg) {zeroFreeAll\_of\_topG\\(la = 3/2)};
+\node[thm, below left=5mm and -6mm of topg] (landau) {zeroFreeOn\_of\_tiedWin\_cyc\\Landau criterion (formB)\\Chebyshev on windows};
+\node[df, below right=5mm and -8mm of topg] (topgdef) {TopG: family classes\\connected};
+\node[thm, below right=6mm and -10mm of imp] (supply) {supplyChi\\VWinAt $\psi$ 401 $\Rightarrow$ HostExW (3/2)};
+\node[thm, below=of topgdef] (green) {shape\_closed\_link\_n\_of\_green\\(Green's cuspidal characters)};
+\node[thm, below=13mm of supply] (vwin) {One.vwin\_of\_row\\$\vdash$ VWin (Sha-length bounds)};
+\node[thm, right=8mm of lit] (row) {galoisLocalGlobalStrong\_recParameter\\$\vdash$ Row0b recT};
+\node[thm, below=of row] (galth) {galoisRepresentations\_of\_thetaLift};
+\node[thm, below left=5mm and -18mm of galth] (tlift) {TP.K.tLiftK\\(theta lifts)};
+\node[thm, below right=5mm and -14mm of galth] (geo) {Geo.geoOne\_holds};
+\node[thm, right=8mm of every] (llc) {Zero.LLC.recTExists\\(local Langlands)};
+\draw (rh) -- (every);
+\draw (every) -- (lit);
+\draw (lit) -- (theta);
+\draw (theta) -- (imp);
+\draw (imp) -- (topg);
+\draw (imp) -- (supply);
+\draw (topg) -- (landau);
+\draw (topg) -- (topgdef);
+\draw (topgdef) -- (green);
+\draw (supply) -- (vwin);
+\draw (every) -- (row);
+\draw (every.east) -- (llc);
+\draw (row) -- (galth);
+\draw (galth) -- (tlift);
+\draw (galth) -- (geo);
+\draw[dashed] (vwin.east) to[out=0, in=-90] (row.south east);
+\draw[dashed] (lit.east) -- (row.west);
+\end{tikzpicture}

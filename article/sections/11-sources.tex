@@ -1,0 +1,31 @@
+\section{Sources and contributions}\label{sec:sources}
+
+\paragraph{Sources.} The note \cite{remark}; the Lean source \cite{alpotree} at the archive hash given
+in \S\ref{sec:reading}, with Lean~4 \cite{lean4} and Mathlib \cite{mathlib2020}; and the published
+literature cited in the text. No other account of this claim was consulted.
+
+\paragraph{Contributions of this article.}
+\begin{itemize}
+\item The map of the proof from \lean{riemannHypothesis} to the three deep inputs, with each node
+  quoted or cited at file:line (\S\S\ref{sec:top}--\ref{sec:connection}, Figure~\ref{fig:top}).
+\item The observation that all five exported theorems reduce to Statement~\ref{st:every} by
+  Mathlib-level arguments, and an account of how the literature fields are supplied: 195
+  declarations take the structure as an argument and 13 reach its fields, and the final construction
+  supplies the first and third fields with the same Galois-representation declaration and the middle
+  field with \lean{UpperTheory.Zero.LLC.recTExists}.
+\item The reading of the analytic half: the prime sum of remark item 5 as the error term of the
+  smoothed explicit formula, the Landau-type criterion on windows (Statement~\ref{st:landau}), and the
+  reduction of the square-root bound to level-compatible, chain-tied families.
+\item The reading of the window bound (Statement~\ref{st:vwin}) as a bound on lengths of
+  $\text{Ш}^1(\mathbb Q_\ell/\mathbb Z_\ell(-e))$ over twisted layers of the cyclotomic
+  $\mathbb Z_2$-tower, compared with remark items 11 and 17.
+\item The comparison of the three deep inputs (Statements~\ref{st:row}, \ref{st:tlift} and the local
+  Langlands correspondence) with the published theorems they resemble, and the observation that the
+  traced route to Statement~\ref{st:row} uses a theta-lift input and an input supplied by
+  \lean{UpperTheory.Gal.Int.Geo.geoOne_holds}, through a weight-one geometric realization.
+\item The crosswalk of remark items 1--20 (Table~\ref{tab:remark}), including the finding that the
+  Behrend construction lies outside our estimate of the dependency cone.
+\item The tooling: a text index of the tree, a reference-graph estimate of the dependency cone with
+  controls, and a script that extracts every quoted statement and checks every citation
+  (Appendix~\ref{app:method}).
+\end{itemize}

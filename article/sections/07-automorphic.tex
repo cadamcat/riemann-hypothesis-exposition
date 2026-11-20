@@ -1,0 +1,164 @@
+\section{The automorphic half}\label{sec:automorphic}
+
+Three deep inputs sit at the bottom of the right column of Figure~\ref{fig:top}. The source
+supplies declarations and proof bodies for the three inputs discussed here. This section gives
+their statements, the published results they resemble, and the proof references we traced.
+
+\subsection{Galois representations for polarized cuspidal representations}\label{sec:galois}
+
+\leanquote{UpperTheory.GalStar.Row0b}
+\leanquote{UpperTheory.GalStar.PropsB}
+\leanquote{GlobalTheory.ContraPair.PolarizedPair}
+
+\begin{statement}[Galois representations, as stated]\label{st:row}
+Let $E$ be a CM field, $\ell$ a prime, $\iota:\overline{\mathbb Q}_\ell\simeq\mathbb C$ and $a\ge1$. Let
+$\pi$ be a regular algebraic cuspidal representation of $\mathrm{GL}_a$ over $E$
+(\texttt{CuspSub E a}), and let $\chi$ be a Hecke character of $E^+$ with $\chi_v(-1)=(-1)^a$ at every
+infinite place $v$. The polarization condition pairs $\pi$ twisted by
+$(\chi\circ\mathrm N_{E/E^+})^{-1}$ with $\pi$ under the conjugated action. Then there exist a
+continuous semisimple $r:G_E\to\mathrm{GL}_a(\overline{\mathbb Q}_\ell)$, an integer $\mathrm{wt}$
+and multisets $\mathrm{HT}(\tau)$ with the following properties. At each finite place $w\nmid\ell$,
+for each local correspondence $\mathrm{rc}$ satisfying the notion \texttt{Rc} and each local
+component $\sigma$ of $\pi$, the Weil--Deligne parameters of $r$ and of
+$\mathrm{rc}(\mathrm{algNorm}(\sigma))$, where \texttt{algNorm} twists $\sigma$ by
+$|\det|^{(1-a)/2}$, have equal dimension. The structure \lean{UpperTheory.GalStar.AwayB} gives
+their equality in its toral, zero-monodromy case, and equality of inertia characteristic polynomials
+with zero monodromy under its specified tame hypotheses (field \texttt{away}). The multiset
+$\mathrm{HT}(\tau)$ consists of $\frac{a-1}2$ minus the infinitesimal weights of $\pi$ at $\iota\tau$
+(field \texttt{weights}), and conjugation of $\tau$ sends each weight $h$ to $\mathrm{wt}-h$ (field
+\texttt{weights\_conj}). The field \texttt{above} adds conditional local crystalline, de Rham,
+potentially semistable and Hodge--Tate compatibility conclusions.
+\stl{src/Development/AutomorphicArithmetic/Foundations/GaloisRepresentations/TypeConditions/WeightsConjBis.lean}{69}
+\end{statement}
+
+\noindent The proposition used in the proof is \texttt{Row0b recT}, with \texttt{Rc} the local
+Langlands notion of \S\ref{sec:llc}. In the literature, Galois representations attached to
+regular algebraic, polarized (``essentially conjugate self-dual'') cuspidal representations of
+$\mathrm{GL}_a$ over CM fields were constructed by Shin \cite{shin} and Chenevier--Harris
+\cite{chenevier-harris}, building on Harris--Taylor \cite{harris-taylor}; local--global compatibility
+at $w\nmid\ell$ (including monodromy) is due to Caraiani \cite{caraiani-duke}. For the terminology
+of polarized representations see \cite{blggt}; the displayed sign condition is the one in
+\texttt{PolarizedPair}. Statement~\ref{st:row} has the shape of this theorem \sti. Whether its
+normalizations (the shift $\frac{a-1}2$, the twist \texttt{algNorm}, the conditions in
+\texttt{AwayB} and on $\mathrm{rc}$) agree with the published statements is question~Q1.
+
+The traced route uses a theta-lift input and an input supplied by
+\lean{UpperTheory.Gal.Int.Geo.geoOne_holds}, through a weight-one geometric realization. The proof
+is
+\leanquote{UpperTheory.Gal.Int.galoisLocalGlobalStrong_recParameter}
+\leanquote{UpperTheory.Gal.Int.galoisRepresentations_of_thetaLift}
+\noindent and, one level down,
+\lean{UpperTheory.Gal.Int.galoisLocalGlobal_of_geometry_lift}
+\stl{src/Development/AutomorphicArithmetic/Foundations/GaloisRepresentations/IntegralStructures/Development.lean}{27}
+combines three ingredients: a ``seed'' obtained from \lean{UpperTheory.Gal.Int.Geo.GeoOne}
+(\lean{UpperTheory.Gal.Int.Div.seedFinOdd_of_geoOne}), congruences at odd finite level
+(\lean{UpperTheory.Gal.Int.Cong.congFinOdd_of_ex}), and the theta lifts of \S\ref{sec:theta}.
+\lean{UpperTheory.Gal.Int.Geo.GeoOne}
+\stl{src/Development/AutomorphicArithmetic/Foundations/GaloisRepresentations/IntegralStructures/GeometricFlagBases/HodgeTrAt.lean}{79}
+is a long statement: for odd $a$, an auxiliary imaginary quadratic datum $x^2=-d$, a non-split set of
+places, and an automorphic subspace $U$ of a unitary group with prescribed local types. Under its
+stated hypotheses, \texttt{GeoOne} supplies a representation with the required Satake data for each
+eligible place away from $\ell$; the choice of representation is inside the quantifier over places.
+It is proved as \lean{UpperTheory.Gal.Int.Geo.geoOne_holds}
+\stl{src/Development/AutomorphicArithmetic/Foundations/GaloisRepresentations/IntegralStructures/GeometricFlagBases/WeightOneGeometricRealization.lean}{11}
+from a ``weight one geometric realization'',
+\lean{UpperTheory.Gal.Int.Geo.weight_one_geometric_realization}, whose statement is a holomorphic
+Lefschetz formula. All of this lives in a directory named
+\texttt{IntegralStructures}; remark items 15 and 18 describe integral structures glued across Hecke
+characters and congruences between lifts and forms \sta{15, 18}. Which published construction, if
+any, \lean{UpperTheory.Gal.Int.Geo.GeoOne} corresponds to is question~Q2.
+
+\subsection{The local Langlands correspondence for \texorpdfstring{$\mathrm{GL}_n$}{GL(n)}}\label{sec:llc}
+
+\leanquote{UpperTheory.Zero.LLC.RecTExists}
+\leanquote{UpperTheory.Zero.LLC.IsRecT}
+\leanquote{UpperTheory.Zero.LLC.LawsT}
+\noindent In words: for each finite place $w$ of a number field $E$ and each choice of a place above
+it in an algebraic closure, there exists a map \texttt{rc} from irreducible smooth representations of
+$\mathrm{GL}_n(E_w)$, over all ranks $n$, to Weil--Deligne parameters. It preserves dimension,
+composes characters with a local Artin map \texttt{a} in rank one, obeys the segment-sum law (field
+\texttt{langlands}) and the real norm-twist law, and sends supercuspidals to irreducible parameters.
+It matches the absolute values of central characters and determinants in general when there is a
+central character. The full central-character, smooth-twist, duality, injectivity and depth laws
+carry the stated \texttt{Good} hypotheses, and a separate field imposes the specified depth-zero type
+compatibility.
+This is the shape of the local Langlands correspondence for $\mathrm{GL}_n$
+\stc{harris-taylor,henniart,scholze-llc} together with the Bernstein--Zelevinsky classification
+\stc{bz1,zelevinsky} \sti. The proof,
+\lean{UpperTheory.Zero.LLC.recTExists}
+\stl{src/Development/AutomorphicArithmetic/Foundations/LocalLanglands/LocalCentralUnits/RecTExists.lean}{20},
+first constructs the correspondence on cuspidal representations (\lean{UpperTheory.Zero.LLC.cuspEx},
+\leanloc{src/Development/AutomorphicArithmetic/Foundations/LocalLanglands/LocalCentralUnits/CuspEx.lean}{168})
+and then extends it to all irreducibles through segments
+(\lean{GlobalTheory.LocLanglands.exists_isLExt}), checking each law separately.
+
+\subsection{Theta lifts between unitary groups}\label{sec:theta}
+
+\leanquote{UpperTheory.TP.TLiftK}
+\leanquote{UpperTheory.TP.IsLift}
+
+\begin{statement}[Theta lifts in a stable range, as stated]\label{st:tlift}
+Fix a CM field $E$, a base datum $B$ satisfying \texttt{GoodK}, a rank $n\ge1$, and a space $X$ with
+identity Gram matrix satisfying \texttt{IsHerm (cj E) B n 0} (which includes signature and lattice
+conditions). There is a threshold $d_0$ such that for every $d\ge d_0$ and every $W$ of dimension $d$
+with scalar Gram matrix satisfying \texttt{IsSkew (cj E) B d 0}, the following holds. For each pair
+of Hecke characters $\chi_X,\chi_W$ with the prescribed restrictions and infinity types $m_X,m_W$,
+and each irreducible automorphic subspace $U$ for $\mathrm U(X)$ with dominant weights $\lambda$
+satisfying $d+m_W(w)\le2\lambda_k(w)$ for all $w,k$, there is an irreducible automorphic subspace
+$U'$ for $\mathrm U(W)$ with weights as in \texttt{IsLiftWt}. Whenever components of $U$ and $U'$
+are given at a split place, they satisfy \texttt{LocPair}.
+\stl{src/Development/AutomorphicArithmetic/Foundations/GaloisRepresentations/ThetaParseval/HalfIndexLattices/TLiftK.lean}{12}
+\end{statement}
+
+\noindent This is the shape of a non-vanishing theorem for global theta lifts in a stable range,
+with the local theta correspondence at split places \stc{howe,rallis-howe,kudla-rallis,hks} \sti; the
+splitting of the metaplectic cover by the characters $\chi_X,\chi_W$ is as in \cite{kudla-splitting}.
+The proof is \lean{UpperTheory.TP.K.tLiftK}
+\stl{src/Development/AutomorphicArithmetic/Foundations/GaloisRepresentations/ThetaParseval/ThetaKernels/TLiftK.lean}{4}
+$\to$ \lean{UpperTheory.TP.tLift_holds_k} $\to$ \lean{UpperTheory.TP.tLift_of_tools_k}
+\stl{src/Development/AutomorphicArithmetic/Foundations/GaloisRepresentations/ThetaParseval/ThetaKernels/TPGTop.lean}{46},
+whose ingredients have the names of the standard ones: a Rallis inner product step
+(\lean{UpperTheory.TP.rallis_k}), non-vanishing (\lean{UpperTheory.TP.nonVan_k}), automorphy of the
+lift (\lean{UpperTheory.TP.liftAut_k}), and a tool kit
+\lean{UpperTheory.TP.tools_holds_k}
+\stl{src/Development/AutomorphicArithmetic/Foundations/GaloisRepresentations/ThetaParseval/ThetaKernels/TPGHolds.lean}{39}
+built from a Siegel--Weil formula, the continuation of Siegel Eisenstein series and a real local
+lift \stc{weil-siegel,kudla-rallis}. Whether Statement~\ref{st:tlift}, with its weight condition and
+a threshold $d_0$ fixed before the target rank, space, characters and automorphic subspace are
+chosen, matches a published theorem is question~Q3. Item 8 describes an iteration of theta lifts
+$\mathrm U(X_0)\to\mathrm U(X_1)\to\dots\to\mathrm U(X_m)$ \sta{8}. The displayed theorem gives a
+single lift under its stated hypotheses; the identification of its hypotheses with those of the
+proposed iteration remains open.
+
+\subsection{The theta-integral side and Green's characters}\label{sec:thetaside}
+
+The connectedness hypothesis \lean{UpperTheory.Top.TopG} of \S\ref{sec:analytic} is proved from a
+package of hypotheses on theta integrals:
+\leanquote{UpperTheory.Lit.every_character_of_theta_integrals_local_matching}
+\noindent The literature layer of \S\ref{sec:architecture} supplies the theta-integral packages
+(\lean{UpperTheory.LiteratureTheorems.published_results_eigen},
+\lean{UpperTheory.LiteratureTheorems.published_results_first},
+\lean{UpperTheory.LiteratureTheorems.theta_integrals_agree_and_local_matching_of_literature}), the
+covolume input and \texttt{RecTExists}. The window bound \texttt{hV} is passed separately, from
+\lean{UpperTheory.One.vwin_of_row} at the top-level call. The covolume bound is
+\leanquote{GlobalTheory.CovTop.CovolumeBoundOfX}
+\noindent and is proved by \lean{SelfIntersectionVolumeEstimates.topCovolSlim2_use_alt_alt}
+\stl{src/Development/AutomorphicArithmetic/ThetaCorrespondence/ThetaPairLifts/ThirdPlaceSeries/TopCovolSlim2Use.lean}{16}.
+The call at
+\leanlocx{src/Development/AutomorphicArithmetic/ThetaCorrespondence/ThetaPairLifts/ThirdPlaceSeries/EveryCharacterOfLiteratureOfVWin.lean}{812}
+passes inputs for resolution, principalisation, the Poincaré--Lelong formula, arithmetic
+Hilbert--Samuel, Moriwaki bigness, the Zarhin statement, a nef Riemann--Roch inequality and the other
+hypotheses of that theorem. Remark item 18
+mentions ``computation of covolumes'' \sta{18}.
+
+One finite-group input appears explicitly. The source states the prime-field case of Green's
+classification of cuspidal characters of $\mathrm{GL}_d(\mathbb F_g)$ \stc{green}. Cuspidality here
+means irreducibility and vanishing of restriction to the Levi by unipotent invariants for each proper
+maximal parabolic:
+\leanquote{GlobalTheory.GLq.Green}
+\noindent with the familiar degree $\prod_{i=1}^{d-1}(g^i-1)$, and proved from the explicit character
+formula on elliptic elements, \lean{GlobalTheory.Published.GreenRegularCharacters}
+\stl{src/Development/AbelianVarietyTheory/PublishedTheorems/GaloisCohomology₂/GreenRegularCharacters.lean}{13},
+which the tree proves as \lean{GlobalTheory.greenRegularCharacters_holds}
+\stl{src/Development/AbelianVarietyTheory/Proofs/InertiaEigenvalues/GreenCuspidalCharsByRegularCharsProof.lean}{137}.
+It enters through \lean{UpperTheory.Top.shape_closed_link_n_of_green} (\S\ref{sec:analytic}).

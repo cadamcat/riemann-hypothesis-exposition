@@ -1,0 +1,62 @@
+\section{Method}\label{app:method}
+
+The mapping tools used for this article read the source as text. The build, axiom check and replay
+of \S\ref{sec:verification} are separate jobs, reported there.
+
+\paragraph{Index.} A script records, for every \texttt{.lean} file, its imports and the declarations
+beginning at the start of a line (\texttt{theorem}, \texttt{lemma}, \texttt{def}, \texttt{abbrev},
+\texttt{structure}, \texttt{class}, \texttt{inductive}, \texttt{instance}), with full names resolved
+through \texttt{namespace}/\texttt{section}/\texttt{end} blocks and \texttt{\_root\_}. It finds
+1{,}057{,}993 declarations and 909{,}822 import lines.
+
+\paragraph{Dependency-cone estimate.} For each declaration, the identifiers in its text are resolved
+against the index (exact names; then the declaration's own namespace prefixes; then namespaces opened
+in its file), giving 6{,}241{,}758 reference edges. A breadth-first search from \lean{riemannHypothesis}
+reaches 697{,}937 declarations, at depth at most 51. The estimate misses references made through dot
+notation, instances, notation and tactics, and can add spurious edges for short names; it is neither
+an upper nor a lower bound for the kernel's cone. Controls: \lean{claimAll}, \lean{critAll} and
+\lean{UpperTheory.FinalTheorems.riemannHypothesis}, which \lean{riemannHypothesis} does not use, are
+absent from it; \lean{allChi} (depth 2) and \lean{UpperTheory.Top.VWin} (depth 6) are present.
+Import closure is useless as a filter: the kernel file reaches 175{,}179 of the 175{,}187 modules.
+
+\paragraph{The literature layer.} The count ``13 of 195'' in \S\ref{sec:architecture} follows uses of
+the three fields of \texttt{O} within the declaring file, directly and through calls of other lemmas of
+that file applied to \texttt{O}.
+
+\paragraph{Quotations and citations.} Every framed quotation is generated from the source by a
+script: a theorem up to its \texttt{:=}, a definition or structure with its body, at most 30 lines. A
+second script regenerates every quotation and fails, by name, if a quotation differs from the source,
+if a declaration name written in the text does not exist, if a cited \texttt{file:line} does not start a
+declaration (or, where marked, does not exist), or if a citation key is undefined. A control copy with
+one altered quotation, one wrong line number, one misspelled name and one undefined key produces
+exactly those four failures.
+
+\section{Libraries of the tree}\label{app:libraries}
+
+{\small
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Library & files & lines & theorems & definitions & \texttt{Statement*.lean}\\
+\midrule
+Development & 141{,}928 & 12{,}232{,}663 & 562{,}329 & 120{,}848 & 15\\
+Formalism & 18{,}254 & 3{,}200{,}748 & 162{,}118 & 74{,}178 & 483\\
+GroundTheory & 8{,}507 & 1{,}119{,}138 & 54{,}211 & 18{,}632 & 1{,}060\\
+ReciprocityTheory & 3{,}845 & 563{,}016 & 27{,}722 & 8{,}186 & 2\\
+CompanionTheory & 2{,}027 & 194{,}218 & 9{,}419 & 2{,}238 & 4\\
+PositivityTheory & 449 & 55{,}130 & 2{,}702 & 1{,}929 & 0\\
+Lemmata & 167 & 9{,}232 & 245 & 6 & 0\\
+BuildAid, Supplements, Main, Statements & 10 & 70 & 9 & 4 & 1\\
+\bottomrule
+\end{tabular}
+}
+
+\medskip
+\noindent Counts are of declarations found by the index (theorems include lemmas; definitions include
+abbreviations). Lean namespaces cut across libraries: most declarations of \texttt{Development} live in
+the namespace \texttt{GlobalTheory}. \texttt{Development} holds the main line of the proof
+(\texttt{AutomorphicArithmetic}: the endgame, the theta correspondence, Galois representations, local
+Langlands, the window bound) and the theorems behind the literature layer
+(\texttt{AbelianVarietyTheory}, 99{,}187 files). \texttt{Formalism} holds the analytic notions of
+\S\ref{sec:analytic} and the Galois-cohomology definitions of \S\ref{sec:window}. \texttt{GroundTheory}
+and \texttt{ReciprocityTheory} hold algebraic number theory, class field theory and reductive groups
+not in Mathlib.

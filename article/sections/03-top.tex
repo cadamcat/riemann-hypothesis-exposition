@@ -1,0 +1,79 @@
+\section{The exported theorems and the classical reductions}\label{sec:top}
+
+\subsection{What Main.lean states}
+
+\texttt{Main.lean} imports two files: \texttt{Statements.lean}, which imports only Mathlib, and
+\nolinkurl{Supplements/Kernels/MainTheoremsAll.lean} \stlx{src/Main.lean}{1}. Its first theorem has
+Mathlib's proposition as its type:
+\leanquote{riemannHypothesis}
+\noindent Mathlib defines \mathlib{RiemannHypothesis} as: every $s\in\mathbb C$ with $\zeta(s)=0$,
+$s\ne-2(n+1)$ for all $n\in\mathbb N$, and $s\ne1$ has $\operatorname{Re}s=\tfrac12$
+\stc{mathlib2020}. (The definition explicitly excludes the pole $s=1$. Mathlib's
+\mathlib{riemannZeta} is a total function and assigns a finite non-zero value there.) The tree restates this proposition in its
+own words, and the second exported theorem proves the restatement with the same proof term, so the
+two propositions must be definitionally equal for the file to compile:
+\leanquote{RiemannZetaZerosOnLine}
+\noindent The other three exported theorems are the generalized Riemann hypothesis for Dirichlet
+$L$-functions in three forms: non-vanishing on $\operatorname{Re}s>\frac12$ (\lean{LFunction_ne_zero_of_half_lt_re},
+\leanloc{src/Main.lean}{8}), zeros in the critical strip lie on the line for every character
+(\leanloc{src/Main.lean}{10}) and for primitive characters (\leanloc{src/Main.lean}{12}). The first
+of these is the statement everything else reduces to:
+\leanquote{DirichletLNonvanishingRightOfHalf}
+
+\subsection{One proposition carries the whole proof}
+
+The four theorems in \texttt{Supplements/Kernels/MainTheorems.lean} that \texttt{Main.lean} re-exports
+all take a single input, \lean{allChi}:
+\leanquote{allChi}
+\leanquote{rhOfAll}
+\noindent where \lean{UpperTheory.EveryCharacter} is, word for word, the proposition
+\lean{DirichletLNonvanishingRightOfHalf} again:
+\leanquote{UpperTheory.EveryCharacter}
+
+\begin{statement}[Every character]\label{st:every}
+For every $N\ge1$, every Dirichlet character $\chi$ modulo $N$ and every $s$ with
+$\operatorname{Re}s>\frac12$, except $\chi=1$ together with $s=1$, one has $L(s,\chi)\neq0$.
+\stl{src/Development/AutomorphicArithmetic/CharacterBoxes/EveryCharacter.lean}{13}
+\end{statement}
+
+The rest of the traced source supplies the proof body of Statement~\ref{st:every}, the theorem
+\lean{UpperTheory.FinalTheorems.everyCharacter} (\S\ref{sec:architecture}). The reductions from it
+to the five exported theorems are short and use only Mathlib.
+
+\subsection{The reductions}
+
+\begin{enumerate}
+\item \emph{Riemann hypothesis.} \lean{Formalism.VW.rh_of_every} specializes
+  Statement~\ref{st:every} to the trivial character modulo $1$, whose $L$-function is $\zeta$
+  (Mathlib's \mathlib{LFunction_modOne_eq}), and passes to \lean{Formalism.VW.rh_of_right}:
+  \leanquote{Formalism.VW.rh_of_right}
+  For a non-trivial zero $\rho$ with $\operatorname{Re}\rho<\frac12$, the proof first excludes
+  $\rho=0$ using $\zeta(0)=-\frac12$. It then evaluates the functional equation
+  $\zeta(1-s)=2(2\pi)^{-s}\Gamma(s)\cos(\pi s/2)\zeta(s)$ (Mathlib's \mathlib{riemannZeta_one_sub})
+  at $s=1-\rho$, where the factors $2(2\pi)^{-s}$, $\Gamma(s)$ and $\cos(\pi s/2)$ are non-zero: a
+  vanishing cosine in this range would force $\rho=0$ or a negative even integer
+  \stl{src/Formalism/GammaFactorNonvanishing/RhOfRight.lean}{5} \stcs~\cite{davenport}.
+\item \emph{Primitive characters, critical strip.} \lean{Formalism.VW.critLine}
+  \stl{src/Formalism/GammaFactorNonvanishing/CritLine.lean}{11} does the same with the functional
+  equation of the completed $L$-function of a primitive character, which relates $\chi$ at $s$ to
+  $\chi^{-1}$ at $1-s$ (Mathlib's \mathlib{IsPrimitive.completedLFunction_one_sub}); the
+  archimedean factor $\Gamma_{\mathbb R}(s+\kappa)$, $\kappa\in\{0,1\}$, is non-zero for
+  $\operatorname{Re}s>0$ (\lean{Formalism.VW.gammaFactor_ne_zero},
+  \leanloc{src/Formalism/GammaFactorNonvanishing/CritLine.lean}{6}).
+\item \emph{All characters, critical strip.} \lean{Claim.strip}
+  \stl{src/Development/AutomorphicArithmetic/CharacterBoxes/ClaimStrip.lean}{59} first passes from
+  $\chi$ to the primitive character $\chi^\ast$ inducing it: in $0<\operatorname{Re}s<1$,
+  $L(s,\chi)=L(s,\chi^\ast)\prod_{p\mid N}(1-\chi^\ast(p)p^{-s})$ and the Euler factors do not vanish
+  because $|\chi^\ast(p)p^{-s}|<1$ (\lean{Claim.prim_zero}, \lean{Claim.factor_ne_zero}).
+\item \emph{The statement for $\zeta$ in Mathlib's form} also follows directly (\lean{Claim.zeta},
+  \leanloc{src/Development/AutomorphicArithmetic/CharacterBoxes/ClaimStrip.lean}{75}), using
+  $\zeta(s)\ne0$ for $\operatorname{Re}s\ge1$ (Mathlib's \mathlib{riemannZeta_ne_zero_of_one_le_re}).
+\end{enumerate}
+
+These steps are the textbook passage from ``no zeros in $\operatorname{Re}s>\frac12$'' to ``all
+non-trivial zeros on the line'' \stcs~\cite[Ch.~8--9]{davenport}. A second, parallel reduction,
+\lean{UpperTheory.riemannHypothesis_of_everyCharacter}
+\stl{src/Development/AutomorphicArithmetic/CharacterBoxes/RiemannHypothesisOfEveryCharacter.lean}{215},
+is used by \lean{UpperTheory.FinalTheorems.riemannHypothesis} but not by \texttt{Main.lean}.
+The kernel files \texttt{MainTheoremsAll.lean} and \texttt{MainTheoremsCritical.lean} (two and four
+lines) state no theorem; they only import four further files on small class numbers.

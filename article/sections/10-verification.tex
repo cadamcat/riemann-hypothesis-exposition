@@ -1,0 +1,37 @@
+\section{Verification status}\label{sec:verification}
+
+This section states what has been checked about the source, by whom, and what has not. It will be
+updated when the checks below finish.
+
+\begin{description}[font=\normalfont\bfseries]
+\item[Static scan (done, by us).] A text scan of all 175{,}187 files reports no matches for the
+  listed source patterns: \texttt{axiom}, \texttt{sorry}, \texttt{admit}, \texttt{native\_decide},
+  \texttt{implemented\_by}, \texttt{extern}, \texttt{unsafe}, \texttt{\#eval}, \texttt{initialize},
+  patterns for input/output, process and file calls, and options that skip kernel checking. It
+  identified the five \texttt{run\_cmd} sites, in the files \texttt{BuildAid/D1}--\texttt{D5}, each
+  adding one namespace to Lean's library-suggestion deny list \stlx{src/BuildAid/D1.lean}{4}, and the
+  declaration-copying elaborator in
+  \texttt{Formalism/HermitianCurvature/HermitianCurvatureProofs/CutCptCopy.lean}, which adds
+  declarations obtained by substitution from existing ones (through \texttt{addDecl}) and reports
+  their number. The kernel checks such declarations like any other. The tree contains no local
+  definition of \mathlib{RiemannHypothesis} or \mathlib{riemannZeta}. A text scan does not establish
+  kernel acceptance; the build, axiom check and replay address kernel acceptance and dependencies.
+\item[Full build (in progress).] Compilation of \texttt{Main} and its import closure, which is
+  essentially the whole tree (175{,}179 of 175{,}187 modules are reachable by imports from the kernel
+  file), on a 16-core machine. Result: \emph{in progress}.
+\item[Axioms (in progress).] \texttt{\#print axioms} for the five exported theorems, to confirm that
+  they depend only on \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}, and
+  \texttt{\#print RiemannHypothesis} to confirm the statement is Mathlib's. Result: \emph{in progress}.
+\item[Fresh-environment kernel replay (in progress).] Re-checking every declaration in the dependency
+  cone of the exported theorems in a fresh kernel environment, together with a test that the type of
+  \lean{riemannHypothesis} is the constant \mathlib{RiemannHypothesis} declared in a Mathlib module,
+  and a control in which a proof term is swapped and the replay must reject it. Result:
+  \emph{in progress}.
+\item[Public verification efforts.] Not surveyed in this article, which uses only the note, the source
+  and the published literature.
+\end{description}
+
+\noindent Until the build, the axiom check and the replay have succeeded and been reproduced
+independently, a \sttag{Lean} label identifies a statement or definition in the source, and where
+we discuss a proof body it refers to the body as written. The article makes no claim that the
+Riemann hypothesis has been proved.

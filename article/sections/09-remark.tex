@@ -1,0 +1,79 @@
+\section{The author's description against the source}\label{sec:remark}
+
+The note lists twenty steps with dates \cite{remark}. Table~\ref{tab:remark} places each one in the
+source where we could. Three kinds of evidence appear: a node of the main chain traced in this article
+(\emph{chain}), whose statement has the shape the item describes; a declaration or module whose name
+matches and which lies in our estimate of the dependency cone of \lean{riemannHypothesis}
+(\emph{name}; method in Appendix~\ref{app:method}); and \emph{not located}. A name match shows that a
+declaration with that name exists and is reached by the reference graph, not that it carries the
+item's mathematics. All placements are interpretations.
+
+{\small
+\begin{longtable}{@{}p{0.3cm}p{5.2cm}p{7.6cm}p{1.2cm}@{}}
+\caption{Remark items 1--20 (paraphrased) and their places in the source.}\label{tab:remark}\\
+\toprule
+\# & Item & Location in the source & Evidence\\
+\midrule\endfirsthead
+\toprule
+\# & Item & Location in the source & Evidence\\
+\midrule\endhead
+1 & Stepanov determinant & no module or declaration name contains ``Stepanov'' & not located\\
+2 & invariant derivation $D$ on a CM curve, $p$-divisibility of $D^a\Omega\cdot\theta(0)$ &
+  \lean{GlobalTheory.T.constantCoeff_iterate_invariant_derivation_linear} and related lemmas in
+  \texttt{AbelianVarietyTheory/Proofs/DivisorProofs}; CM curves, theta null values & name\\
+3 & $qN=M^k+R$ with the path quadric; $\theta$ on a sixfold cover of $\mathrm{GL}_5$; Poincaré bundle &
+  module directory \texttt{Formalism/LocalToGlobal/GlobalTheory/GL5}; Poincaré-bundle descent lemmas;
+  quadric point counts. ``Sixfold'' not found & name (partial)\\
+4 & $W(1_S)\ge0$ via a determinant & possibly \lean{UpperTheory.V.Pa.Det.w1sMem} in a directory
+  \texttt{DeterminantPadicFree} & weak\\
+5 & the sum $\sum_{n\le X}\Lambda(n)(X/n-1)-X\log X+(1+\gamma)X$ & \lean{Formalism.Sz},
+  \lean{Formalism.Gz}, inside \lean{Formalism.HC.Level.Gm} (\S\ref{sec:analytic}) & chain\\
+6 & $W(1_{(0,1]}+c\,1_{(0,1/X]})\ge0$, with a coefficient $c$ of order $X^{\eta}$, gives $>1-\eta$ & --- & not located\\
+7 & determinants with GGP periods; interlacing weights &
+  \lean{PI.BesselPeriodGGP.IsHaarOn}; interlacing modules in \texttt{CompanionTheory/AutomorphicTheory/BesselWaveGrids} \cite{ggp} & name\\
+8 & iterated theta lifts $\mathrm U(X_0)\to\dots\to\mathrm U(X_m)$, suggested length $m$ of order $\sqrt X$ &
+  single lift: Statement~\ref{st:tlift}; module \texttt{IteratedLiftChains} & chain (single lift)\\
+9 & norms of lifts via Chowla--Selberg, Weyl, Siegel mass &
+  \lean{GlobalTheory.T.classMean_log_norm_disc_chowlaSelberg} \cite{chowla-selberg};
+  \lean{GlobalTheory.T.weyl_formula_standardUnitaryGroup_weilDatum};
+  \lean{Formalism.MainNotions.StandardLattice.SiegelMassRatioCM} & name\\
+10 & lower bound on divisibility of the iterated lift & candidates in
+  \texttt{IntegralStructures/ZetaCharacterDivisibility} & weak\\
+11 & Iwasawa tower, by analogy with $\mathbb F_{q^n}/\mathbb F_q$ & the fields \texttt{IsChiField}
+  (Statement~\ref{st:vwin}) & chain\\
+12 & seesaw; Bessel period; Rallis & \lean{GlobalTheory.Core.Rk.Seesaw.seesaw_fubini};
+  \lean{UpperTheory.LiteratureTheorems.rallis_inner_product_convergent_of_literature};
+  \lean{UpperTheory.TP.rallis_k} & name\\
+13 & Bost slope inequality & slopes $\mu,\mu_{\max}$ in \lean{Formalism.MainNotions.ChainTied};
+  \lean{GlobalTheory.T.hermitianSystemSlopeBound_of_determinantSlopeInequality} \cite{bost} & name\\
+14 & cost of each lift; stop at $2/3$ a priori & --- & not located\\
+15 & integral structure across Hecke characters (``gcd'') & directory \texttt{IntegralStructures}
+  holding the proof of Statement~\ref{st:row} & chain (directory)\\
+16 & relative trace formula; Poincaré series & Poincaré-series lemmas, e.g.
+  \lean{GlobalTheory.T.poincareSeries_pairing_ne_zero_of_large_level}; ``relative trace formula'' not
+  found & name (partial)\\
+17 & classes in $H^1(\mathcal O_E[1/\ell],\mathbb Q_\ell/\mathbb Z_\ell(-e))$; weakening of Vandiver &
+  \lean{UpperTheory.Top.VVle} with \lean{Formalism.GaloisCohomology.shaLen} (Statement~\ref{st:vwin}) & chain\\
+18 & covolumes, theta series' index, congruences between lifts and forms &
+  \lean{GlobalTheory.CovTop.CovolumeBoundOfX} (\S\ref{sec:thetaside}); congruences
+  \lean{UpperTheory.Gal.Int.Cong.congFinOdd_of_ex} & chain (covolume)\\
+19 & precise choice of the Iwasawa tower using Behrend &
+  \lean{Formalism.BehrendSets.BehrendBound} (Behrend-type sets \cite{behrend}); none of the 89
+  declarations of \texttt{Formalism/BehrendSets} is in our cone estimate & located, off-cone\\
+20 & GRH & the exported theorems at \leanloc{src/Main.lean}{8}, \leanloc{src/Main.lean}{10},
+  \leanloc{src/Main.lean}{12} & chain\\
+\bottomrule
+\end{longtable}
+}
+
+Item 19 deserves a remark. In the module \texttt{Formalism/BehrendSets/Statement.lean}, the
+proposition \lean{Formalism.BehrendSets.BehrendBound} \stl{src/Formalism/BehrendSets/Statement.lean}{54}
+asks for a constant $C>0$ such that for every $K,N\ge1$ there is $T\subseteq[0,N)$ of cardinality at
+least $N\exp(-C\sqrt{\log N\log(K+1)})$ in which every solution of
+$\alpha x_1+\beta x_2+\gamma x_3=0$ with non-zero integer coefficients of absolute value at most $K$
+that sum to zero has $x_1=x_2=x_3$. The same file defines \lean{Formalism.BehrendSets.ShortOrdLin},
+a weighted sum bound restricted to small Frobenius orders in the real $2$-power cyclotomic tower.
+Its fourteen modules are imported
+only by one module of \texttt{Formalism/GL3MeanSquares}, whose declarations are also outside our cone
+estimate. If the kernel's exact cone confirms this, the Behrend construction is not used by the proof
+of \lean{riemannHypothesis} as published.

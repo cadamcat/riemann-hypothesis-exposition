@@ -1,0 +1,86 @@
+\section{The window bound: Galois cohomology over cyclotomic fields}\label{sec:window}
+
+The supply hypothesis of \S\ref{sec:analytic} comes from one proposition, \lean{UpperTheory.Top.VWin},
+which bounds Tate--Shafarevich groups of Tate twists over a family of abelian fields. It is the place
+where the analytic half receives arithmetic input.
+
+\subsection{The statement}
+
+\leanquote{UpperTheory.Top.VWin}
+\leanquote{UpperTheory.Top.VWinAt}
+\noindent The auxiliary conditions are: a ``page'' size $2^{e}$ comparable with $x^{2+8\varepsilon}$,
+\leanquote{UpperTheory.Top.PageN}
+\noindent a pair of primes $q,d$ of prescribed size and congruence type,
+\leanquote{UpperTheory.Top.WinPair}
+\noindent the fields to which the bound applies,
+\leanquote{UpperTheory.Top.IsChiField}
+\noindent and the bound itself:
+\leanquote{UpperTheory.Top.VAt}
+\leanquote{UpperTheory.Top.VVle}
+
+\subsection{What the bound says}
+
+The groups are defined in \texttt{Formalism/GaloisCohomology/Statement.lean}. For a number field $F$,
+a prime $\ell$ and the set $S$ of places of $F$ above $\ell$, an \lean{Formalism.GaloisCohomology.LData}
+records the Galois group $G_S$ of the maximal extension unramified outside $S$, decomposition data at
+$S$, and the $\ell$-adic cyclotomic character
+\stl{src/Formalism/GaloisCohomology/Statement.lean}{54}. The coefficient module is
+$\mathbb Q_\ell/\mathbb Z_\ell$ with $G_S$ acting through the cyclotomic character to the power
+$-e$:
+\leanquote{Formalism.GaloisCohomology.qzTw}
+\noindent and \lean{Formalism.GaloisCohomology.Sha} is the kernel of localization at $S$ in
+$H^1$ \stl{src/Formalism/GaloisCohomology/Statement.lean}{75}, measured by its
+$\mathbb Z_\ell$-length:
+\leanquote{Formalism.GaloisCohomology.shaLen}
+
+\begin{statement}[Window bound, as stated]\label{st:vwin}
+For every primitive character $\psi$, every $0<\varepsilon<\frac1{52}$ and every function
+$e:\mathbb R\to\mathbb N$ satisfying $x^{2+8\varepsilon}\le 2^{e(x)}\le 2x^{2+8\varepsilon}$ for all
+$x\ge1$, there are reals $J\ge1$ and $X_0$ such that for $X\ge X_0$ and every prime pair $(q,d)$ of the shape \texttt{WinPair}
+$\varepsilon$ $X^{1/J}$, there is $Y\in[X^{1/J},X^{1/2}]$ such that for all $x\in[Y,Y^2]$ and every
+number field $E$ of type \texttt{IsChiField} $\psi\ e(x)\ q\ d$:
+\[
+\sum_{\ell\in S}\log\ell\sum_{e=1}^{t-1}\operatorname{length}_{\mathbb Z_\ell}
+\text{Ш}^1\bigl(G_{S_\ell}(E),\,\mathbb Q_\ell/\mathbb Z_\ell(-e)\bigr)\ \le\ \exp\bigl(x^{\varepsilon}/2\bigr),
+\qquad t=\lfloor x^{401}\rfloor,
+\]
+The inequality holds for every finite set $S$ of primes and for every choice of an algebraic
+closure and family of local data \texttt{LData}. Each indicated length is finite for every prime
+$\ell$ and every $1\le e<t$.
+\stl{src/Development/AutomorphicArithmetic/CharacterBoxes/ExistsPageN.lean}{44}
+\end{statement}
+
+The fields $E$ of type \texttt{IsChiField} are subfields of $\mathbb Q(\zeta_N)$, with $2^{e+2}$, the
+conductor of $\psi$, $q$ and $d$ dividing $N$, cut out by the conditions $a\equiv\pm1\pmod{2^{e+2}}$,
+$\psi(a)=1$ and $\bigl(\frac aq\bigr)=\bigl(\frac ad\bigr)=1$ on $a\in(\mathbb Z/N)^\times$. As $x$
+grows, $e(x)$ grows like $(2+8\varepsilon)\log_2 x$, so these fields climb the cyclotomic
+$\mathbb Z_2$-tower, twisted by $\psi$ and by two quadratic characters \sti. The note describes an
+Iwasawa tower chosen by analogy with $\mathbb F_{q^n}/\mathbb F_q$ \sta{11} and a precise choice of
+the tower \sta{19}; the classes in $H^1(\mathcal O_E[1/\ell],\mathbb Q_\ell/\mathbb Z_\ell(-e))$ that
+cannot be removed by twisting, and a ``significant weakening of Vandiver'', are item 17 \sta{17}.
+Statement~\ref{st:vwin} controls the $\log\ell$-weighted sum of lengths of the localization kernels
+in these $H^1$ groups over primes $\ell$ and twists $1\le e<t$. We compare this localization-kernel
+bound with item 17 \sti. How this relates to known results on these groups is question~Q5. (For background on Ш$^1$ and
+Poitou--Tate duality see \cite[Ch.~VIII]{nsw}; for Vandiver's conjecture, \cite[§8.3]{washington}.)
+
+\subsection{How the tree proves the window bound}
+
+\leanquote{UpperTheory.One.vwin_of_row}
+\noindent The proof goes through \lean{UpperTheory.One.Join.automorphic_window_of_inputs}
+\stl{src/Development/AutomorphicArithmetic/AutomorphicVarieties/ModularityArgument/ThresholdArguments/DenseThresholdCases/TopMainZj.lean}{71}
+and \lean{UpperTheory.V.v_window_of_literal_automorphy_n}, whose hypothesis is a structure of four
+propositions:
+\leanquote{GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis}
+\noindent These are filled from the Galois-representation theorem \lean{UpperTheory.GalStar.Row0b}
+(through the structure \lean{UpperTheory.LiteratureTheorems.OpenImageCondition}, whose single field is
+the same proposition), from the base-change theorem \lean{UpperTheory.BaseChangeIdentities.baseChangeN}
+\stl{src/Development/AutomorphicArithmetic/Foundations/BaseChangeIdentities/DefiniteNHolds.lean}{5}
+and from theorems of the tree on local representation theory, Galois cohomology and CM abelian
+varieties. The final step is
+\lean{UpperTheory.V.HV.DescentVanishingReductions.v_window_of_automorphy_csd_ss_mono_odd}
+\stl{src/Development/AutomorphicArithmetic/AutomorphicVarieties/ModularityArgument/ThresholdArguments/DenseThresholdCases/WindowBoundOfLiteratureLevel.lean}{30},
+and the next call is to
+\lean{UpperTheory.V.HV.DescentVanishingReductions.published_hypotheses_from_patching_alt}, which
+assembles the input record \lean{UpperTheory.V.Af.HypothesesH'}. The surrounding directory names
+(\texttt{ModularityArgument}, \texttt{AutomorphyLifting}, \texttt{PatchingModules}) suggest a
+Taylor--Wiles-style interpretation \sti; we have not traced it further.
