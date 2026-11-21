@@ -1,7 +1,7 @@
 \section{Method}\label{app:method}
 
-The mapping tools used for this article read the source as text. The build, axiom check and replay
-of \S\ref{sec:verification} are separate jobs, reported there.
+The mapping tools used for this article read the source as text. The build and kernel checks
+reported in \S\ref{sec:verification} are separate from them.
 
 \paragraph{Index.} A script records, for every \texttt{.lean} file, its imports and the declarations
 beginning at the start of a line (\texttt{theorem}, \texttt{lemma}, \texttt{def}, \texttt{abbrev},
@@ -23,9 +23,9 @@ Import closure is useless as a filter: the kernel file reaches 175{,}179 of the 
 the three fields of \texttt{O} within the declaring file, directly and through calls of other lemmas of
 that file applied to \texttt{O}.
 
-\paragraph{Quotations and citations.} Every framed quotation is generated from the source by a
+\paragraph{Quotations and citations.} Every framed quotation from the alpo.ge source tree is generated from the source by a
 script: a theorem up to its \texttt{:=}, a definition or structure with its body, at most 30 lines. A
-second script regenerates every quotation and fails, by name, if a quotation differs from the source,
+second script regenerates those quotations and fails, by name, if a quotation differs from the source,
 if a declaration name written in the text does not exist, if a cited \texttt{file:line} does not start a
 declaration (or, where marked, does not exist), or if a citation key is undefined. A control copy with
 one altered quotation, one wrong line number, one misspelled name and one undefined key produces

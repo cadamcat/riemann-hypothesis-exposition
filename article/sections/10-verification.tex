@@ -1,37 +1,133 @@
 \section{Verification status}\label{sec:verification}
 
-This section states what has been checked about the source, by whom, and what has not. It will be
-updated when the checks below finish.
+This section states what has been checked about the source, by whom, and what has not. The kernel
+results come from one independent verification record \cite{sutherland}, as of its update of
+21 November 2026, 09:30 UTC. The record says that it will be updated as its remaining checks
+finish.
 
-\begin{description}[font=\normalfont\bfseries]
-\item[Static scan (done, by us).] A text scan of all 175{,}187 files reports no matches for the
-  listed source patterns: \texttt{axiom}, \texttt{sorry}, \texttt{admit}, \texttt{native\_decide},
-  \texttt{implemented\_by}, \texttt{extern}, \texttt{unsafe}, \texttt{\#eval}, \texttt{initialize},
-  patterns for input/output, process and file calls, and options that skip kernel checking. It
-  identified the five \texttt{run\_cmd} sites, in the files \texttt{BuildAid/D1}--\texttt{D5}, each
-  adding one namespace to Lean's library-suggestion deny list \stlx{src/BuildAid/D1.lean}{4}, and the
-  declaration-copying elaborator in
-  \texttt{Formalism/HermitianCurvature/HermitianCurvatureProofs/CutCptCopy.lean}, which adds
-  declarations obtained by substitution from existing ones (through \texttt{addDecl}) and reports
-  their number. The kernel checks such declarations like any other. The tree contains no local
-  definition of \mathlib{RiemannHypothesis} or \mathlib{riemannZeta}. A text scan does not establish
-  kernel acceptance; the build, axiom check and replay address kernel acceptance and dependencies.
-\item[Full build (in progress).] Compilation of \texttt{Main} and its import closure, which is
-  essentially the whole tree (175{,}179 of 175{,}187 modules are reachable by imports from the kernel
-  file), on a 16-core machine. Result: \emph{in progress}.
-\item[Axioms (in progress).] \texttt{\#print axioms} for the five exported theorems, to confirm that
-  they depend only on \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}, and
-  \texttt{\#print RiemannHypothesis} to confirm the statement is Mathlib's. Result: \emph{in progress}.
-\item[Fresh-environment kernel replay (in progress).] Re-checking every declaration in the dependency
-  cone of the exported theorems in a fresh kernel environment, together with a test that the type of
-  \lean{riemannHypothesis} is the constant \mathlib{RiemannHypothesis} declared in a Mathlib module,
-  and a control in which a proof term is swapped and the replay must reject it. Result:
-  \emph{in progress}.
-\item[Public verification efforts.] Not surveyed in this article, which uses only the note, the source
-  and the published literature.
-\end{description}
+\paragraph{Static scan (done, by us).} A text scan of all 175{,}187 files reports no matches for the
+listed source patterns: \texttt{axiom}, \texttt{sorry}, \texttt{admit}, \texttt{native\_decide},
+\texttt{implemented\_by}, \texttt{extern}, \texttt{unsafe}, \texttt{\#eval}, \texttt{initialize},
+patterns for input/output, process and file calls, and options that skip kernel checking. It
+identified the five \texttt{run\_cmd} sites, in the files \texttt{BuildAid/D1}--\texttt{D5}, each
+adding one namespace to Lean's library-suggestion deny list \stlx{src/BuildAid/D1.lean}{4}, and the
+declaration-copying elaborator in
+\texttt{Formalism/HermitianCurvature/HermitianCurvatureProofs/CutCptCopy.lean}, which adds
+declarations obtained by substitution from existing ones (through \texttt{addDecl}) and reports
+their number. The kernel checks such declarations like any other. The tree contains no local
+definition of \mathlib{RiemannHypothesis} or \mathlib{riemannZeta}. A text scan does not establish
+kernel acceptance; the checks below address it.
 
-\noindent Until the build, the axiom check and the replay have succeeded and been reproduced
-independently, a \sttag{Lean} label identifies a statement or definition in the source, and where
-we discuss a proof body it refers to the body as written. The article makes no claim that the
-Riemann hypothesis has been proved.
+\paragraph{The verification record.} A.~Sutherland (MIT) built the source and ran several kernel
+checks on it \cite{sutherland}. The record's source archive has the same SHA-256 hash as the archive
+this article reads (\S\ref{sec:reading}), and it uses Lean v4.33.1 and Mathlib v4.33.1 (commit
+\texttt{0df444a3}). Some checks run on the compiled modules. Others run on the exported proof (the
+output of \texttt{lean4export} on module \texttt{Main}) or compare it with an exported
+``challenge'': the five statements with \texttt{sorry} proofs, importing only Mathlib. In the
+record's words, con-leche's \texttt{-{}-compare} mode is ``an independent implementation of
+Comparator's statement matching''. Table~\ref{tab:verification} lists the checks and their results
+at that time.
+
+\begin{table}[ht]
+\centering\small
+\renewcommand{\arraystretch}{1.25}
+\caption{Checks reported in the verification record \cite{sutherland}, as of 21 November 2026,
+09:30 UTC. ``Export'' is the exported proof; nanoda and con-leche are independently written
+kernels.}\label{tab:verification}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X l >{\raggedright\arraybackslash}X@{}}
+\toprule
+Check & Result & Detail\\
+\midrule
+Build of all 175{,}187 modules (Lean v4.33.1, Mathlib v4.33.1) & pass & zero errors\\
+\texttt{\#print axioms} for the five theorems of \texttt{Main.lean} & pass & \texttt{propext},
+  \texttt{Classical.choice}, \texttt{Quot.sound} only\\
+No axioms declared outside Lean core & pass & 15 axioms in the environment, all in \texttt{Init}\\
+Mathlib files identical to the official cache & pass & 8{,}322 Mathlib and 378 dependency
+  \texttt{.olean} files, byte for byte\\
+\texttt{leanchecker} kernel replay of every module & pass & 175{,}187 of 175{,}187; zero rejections\\
+nanoda (independent Rust kernel) on the full export & accepts & exit 0\\
+con-leche \texttt{master} (\texttt{cd2eceab}) on the full export & accepts & 1{,}468{,}418
+  declarations accepted in \texttt{-{}-verified} mode\\
+con-leche \texttt{-{}-compare} (\texttt{5dc36dc1}): challenge against solution & accepts & all five
+  theorems ``justified by the solution''; 51{,}692 challenge declarations accepted\\
+lean4lean (\texttt{67f63b0c}) on the compiled files, module by module & pass & 175{,}187 of
+  175{,}187; five passed only with its step limit raised (\texttt{decide +kernel} computations)\\
+Lean default and paranoid kernels on the export & running & no verdict yet\\
+\texttt{lake comparator} (Lean v4.36.0), end to end & running & statement comparison and axiom
+  check passed in one run; kernels in progress\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+At that time two of the record's entries for the main proof were still running: the Lean default
+and paranoid kernels on the export, and the end-to-end \texttt{lake comparator} run. Three older binaries gave no verdict: the
+con-leche and con-ron bundled with Lean v4.36.0 declined (exit 2, not a rejection), because they do
+not support one reflexive inductive type in the proof, and the lean4lean bundled with Lean v4.36.0
+cannot read a v4.33 core library.
+
+The record names the verified theorem: \lean{riemannHypothesis}~:~\mathlib{RiemannHypothesis} in
+\texttt{Main.lean}, where \mathlib{RiemannHypothesis} is Mathlib's own definition, and four further
+theorems, among them the analogous statement for all Dirichlet $L$-functions. In the record,
+``GRH'' means Dirichlet $L$-functions only.
+
+Sutherland built the source on unsandboxed cloud machines by invoking Lean directly with the inputs
+that Lake supplies. The checked export came from that build. The complete per-module compiled-file
+manifest depends on the build path because Lean v4.33.1 stores absolute source paths with linter
+messages. The record identifies the export hash as the cross-build comparison target and leaves
+open whether exports can contain source paths. The full comparison of compiled files with a Lake
+build and the export-hash comparison with a sandboxed Lake build remain open. The record adds: ``A passing
+check shows that the formal statements, as written in Lean against Mathlib's definitions, follow
+from the three standard axioms according to the kernels used. It relies on those kernels and on
+Mathlib's definitions being what they are intended to be.''
+
+\FloatBarrier
+\paragraph{Checks of two divisor-sum inequalities.} The record also combines the proof with
+Robin1984 (\texttt{kimihiro64/Robin1984}, commit \texttt{acab1a3}), an independent formalization of
+Robin's and Lagarias's criteria on the same Lean and Mathlib versions \cite{sutherland}. Importing
+both gives two theorems about the divisor sum, with no hypotheses and no mention of $\zeta$. As
+stated in the record:
+
+\noindent\begin{minipage}{\linewidth}
+\begin{Verbatim}
+theorem robin_inequality :
+    ∀ n : ℕ, 5040 < n →
+      ((ArithmeticFunction.sigma 1 n : ℕ) : ℝ) <
+        Real.exp Real.eulerMascheroniConstant * (n : ℝ) * Real.log (Real.log (n : ℝ))
+
+theorem lagarias_inequality :
+    ∀ n : ℕ, 0 < n →
+      ((ArithmeticFunction.sigma 1 n : ℕ) : ℝ) ≤
+        (harmonic n : ℝ) + Real.exp (harmonic n : ℝ) * Real.log (harmonic n : ℝ)
+\end{Verbatim}
+\end{minipage}
+
+\noindent That is, $\sigma(n)<e^{\gamma}n\log\log n$ for every $n>5040$, and
+$\sigma(n)\le H_n+e^{H_n}\log H_n$ for every $n\ge1$, where $\sigma(n)$ is the sum of the divisors
+of $n$ and $H_n$ the $n$-th harmonic number. Classically, each inequality is equivalent to the
+Riemann hypothesis (Robin's and Lagarias's criteria) \stcs. Both theorems compile and
+\texttt{\#print axioms} reports only \texttt{propext}, \texttt{Classical.choice} and
+\texttt{Quot.sound}. con-leche \texttt{master} accepts the full combined export (1{,}472{,}825
+declarations), con-leche \texttt{-{}-compare} accepts both theorems against a challenge file that
+imports only Mathlib, and nanoda accepts the combined export. The \texttt{lake comparator} run on
+the combined export had passed its statement comparison and axiom check; its Lean kernel stages
+were still running. Robin1984 on its own (its three equivalences with the
+Riemann hypothesis) passed its build, con-leche with \texttt{-{}-compare}, the unmodified
+Comparator v4.33.0 and \texttt{lake comparator} (Lean v4.36.0). In the record's words, ``these
+statements still rely on Mathlib's definitions of the divisor sum, Euler's constant, harmonic
+numbers, \texttt{exp} and \texttt{log}, and on the Robin1984 proof, which is why that proof was put
+through the same checks.''
+
+\paragraph{Other public verification efforts.} Not surveyed in this article.
+
+\paragraph{Status.} The source's theorem \lean{riemannHypothesis}~:~\mathlib{RiemannHypothesis}
+(Mathlib's definition) has been machine-checked by several independent checkers, as reported in the
+record \cite{sutherland}. A \sttag{Lean} label identifies a location in the Lean source. The record
+reports kernel replay of every compiled module. What
+remains is the reading of the mathematical argument by experts, and the agreement of Mathlib's
+definitions with the classical ones; the Robin--Lagarias check above bears on the second. This
+article maps and explains the argument; it does not judge it.
+
+\paragraph{Context.} On 20 November 2026 Ravi Vakil posted on his blog an independent,
+human-written manuscript of about 940 pages by Alessandro Masullo, claiming a proof of the
+generalized Riemann hypothesis (GRH) \cite{vakil-masullo}. Brian Conrad had reviewed it for months.
+Status: claimed. This article does not discuss the manuscript.

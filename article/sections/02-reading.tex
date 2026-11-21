@@ -9,9 +9,9 @@ timeline of twenty ideas (``items 1--20''), which \S\ref{sec:remark} maps to the
 \paragraph{Status labels.} Every mathematical claim carries one of four labels.
 \begin{description}[font=\normalfont]
 \item[\sttag{classical}] a published theorem or a standard fact, with a citation.
-\item[\sttag{Lean: file:line}] identifies a statement or definition in the source at this
-  location. Where we discuss a proof body, the label refers to the body as written. The build,
-  axiom check and kernel replay are in progress (\S\ref{sec:verification}).
+\item[\sttag{Lean: file:line}] identifies a location in the Lean source. Where we discuss a proof
+  body, the label refers to the body as written. Section~\ref{sec:verification} reports kernel
+  replay of the compiled modules.
 \item[\sttag{remark, item $n$}] the author's own description in the note.
 \item[\sttag{interpretation}] our reading: what a Lean statement means, or which published theorem
   it corresponds to. Lean declaration names are suggestive (the source has names such as
@@ -21,15 +21,16 @@ timeline of twenty ideas (``items 1--20''), which \S\ref{sec:remark} maps to the
 File paths are relative to the tree's \texttt{src/} directory and line numbers refer to the archive
 with the hash above.
 
-\paragraph{Quotations.} Lean statements are printed in framed boxes headed ``Source: file:line''.
+\paragraph{Quotations.} Lean statements from the alpo.ge source tree are printed in framed boxes headed ``Source: file:line''.
 Their text is produced by a script from the source, not typed: a theorem is quoted up to its
 \texttt{:=} (the proof is elided as \texttt{:= …}), and a definition or structure is quoted with its
-body. A checking script (Appendix~\ref{app:method}) regenerates every quotation and fails if any
+body. A checking script (Appendix~\ref{app:method}) regenerates those quotations and fails if any
 box differs from the source, if a cited line does not start a declaration, or if a declaration name
 in the text does not exist in the tree.
 
-\paragraph{What the article does not do.} It does not judge whether the proof is correct; the
-kernel check decides that. It does not trace the source to the bottom: the map follows the proof
+\paragraph{What the article does not do.} It does not judge whether the proof is correct: the
+kernel checks of \S\ref{sec:verification} bear on the formal proof, and the mathematical argument
+awaits expert reading. It does not trace the source to the bottom: the map follows the proof
 from \texttt{Main.lean} downward for six to seven levels, until each branch reaches a named
 theorem whose statement can be read on its own. The article compares the input statements reached
 on those branches with results from the literature.

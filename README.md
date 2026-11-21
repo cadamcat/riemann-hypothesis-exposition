@@ -2,11 +2,11 @@
 
 An annotated map of the architecture of the Lean 4 source tree, published with L. Alpöge's note of 20 November 2026, that contains a theorem `riemannHypothesis : RiemannHypothesis` (Mathlib's proposition).
 
-[Read the article (PDF)](https://github.com/cadamcat/riemann-hypothesis-exposition/releases/latest/download/riemann-hypothesis-exposition-article.pdf)
+[Read the article (PDF)](https://github.com/cadamcat/riemann-hypothesis-exposition/releases/latest/download/riemann-hypothesis-exposition-article.pdf) · [Watch the film (4K, 8 min)](https://github.com/cadamcat/riemann-hypothesis-exposition/releases/download/v1.1.0/riemann-hypothesis-exposition-film-4k.mp4)
 
 - Author: Yao Xu.
-- Version: v1.0.0.
-- Date: 20 November 2026.
+- Version: v1.1.0 (article and narrated film).
+- Date: 21 November 2026.
 - Readers: graduate students and research mathematicians. §1 is written for a general reader.
 
 ## What the article covers
@@ -30,11 +30,23 @@ An annotated map of the architecture of the Lean 4 source tree, published with L
 Every mathematical claim in the article carries one of four labels:
 
 - **classical**: a published theorem or standard fact, with a citation.
-- **Lean (file:line)**: the source contains a statement or definition at this location. Where the article discusses a proof body, the label refers to the body as written. The build, axiom check and kernel replay of the tree were in progress when this version was written (see below).
+- **Lean (file:line)**: identifies a location in the Lean source. Where the article discusses a proof body, the label refers to the body as written. Section 10 reports the kernel replay of the compiled modules.
 - **remark**: the author's own description in the note.
 - **interpretation**: our reading of a Lean statement, or of which published result it corresponds to. Declaration names are suggestive, but they are not evidence.
 
-**This article does not assert that the Riemann hypothesis is proved.** It describes what the Lean source states and how the pieces fit together. Whether the source proves `RiemannHypothesis` from Lean's standard axioms is decided by a full build, an axiom audit and a kernel replay. Section 10 records what had been checked when this version was written. A later version will add those results.
+**Verification status (Section 10).** An independent verification record by A. Sutherland (MIT; https://math.mit.edu/~drew/grh/, as of 21 November 2026, 09:30 UTC) reports the following:
+- all 175,187 modules compile;
+- the five headline theorems use only `propext`, `Classical.choice` and `Quot.sound`;
+- Lean's kernel replays every compiled module;
+- the independent kernels nanoda and con-leche accept the full exported proof.
+
+Some runs were still going at that time. So `riemannHypothesis : RiemannHypothesis` (Mathlib's definition) has been machine-checked by several independent checkers, as that record reports.
+
+Two things remain for expert reading: the mathematical argument itself, and the agreement of Mathlib's definitions with the classical ones. The article does not call the proof refereed.
+
+## The film
+
+A narrated film of about 8 minutes follows the article's outline: primes and zeros, what the source states, the analytic half, the two halves of the proof, the author's idea, and where the check stands. It is attached to the release in 4K with burned-in subtitles. The subtitles and the narration text are in `film/`. The narration voice is synthesized with an OpenAI speech model.
 
 ## Quotations are generated, not typed
 
@@ -79,4 +91,4 @@ Prepared with the assistance of AI.
 
 ## Licence
 
-The article text, figures and LaTeX source are licensed under CC BY 4.0 (`LICENSE-CC-BY-4.0.txt`). The scripts in `tools/` are licensed under Apache-2.0 (`LICENSE-APACHE-2.0.txt`). The files in `article/quotes/` are short excerpts of the Lean source, quoted for commentary; they are not covered by these licences. The source archive itself is not redistributed here.
+The article text, figures, LaTeX source, film, subtitles and narration text are licensed under CC BY 4.0 (`LICENSE-CC-BY-4.0.txt`). The scripts in `tools/` are licensed under Apache-2.0 (`LICENSE-APACHE-2.0.txt`). The files in `article/quotes/` are short excerpts of the Lean source, quoted for commentary; they are not covered by these licences. The source archive itself is not redistributed here.
