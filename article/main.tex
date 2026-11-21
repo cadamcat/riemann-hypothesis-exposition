@@ -16,6 +16,7 @@
 \usetikzlibrary{positioning,arrows.meta,fit}
 \usepackage{booktabs,tabularx,longtable,array}
 \usepackage{placeins}
+\usepackage{float}
 \usepackage[hidelinks]{hyperref}
 \usepackage{url}
 \urlstyle{tt}
@@ -53,14 +54,14 @@
 \title{How the alpo.ge Lean source states a proof of the Riemann hypothesis:\\
 an annotated map of its architecture}
 \author{Yao Xu}
-\date{Version 1.1.0, 21 November 2026}
+\date{Version 1.2.0, 21 November 2026}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
 A Lean~4 source tree of 175{,}187 files, published with a four-page note in November 2026,
-contains a theorem \lean{riemannHypothesis} whose type is Mathlib's proposition
+contains a certified proof of a theorem \lean{riemannHypothesis} whose type is Mathlib's proposition
 \mathlib{RiemannHypothesis}. This article explains, from the source text, how that theorem is
 assembled. Short classical reductions bring the five exported theorems down to one proposition:
 every Dirichlet $L$-function is non-zero on $\operatorname{Re}s>\tfrac12$, except at $s=1$ for
@@ -70,12 +71,10 @@ Galois-cohomology length bounds over cyclotomic fields and declarations on Galoi
 attached to polarized regular algebraic cuspidal representations over CM fields, a form of the
 local Langlands correspondence for $\mathrm{GL}_n$, and global theta lifts between unitary groups in
 a stable range. Every claim below carries a source and a
-status label, and a script extracts the Lean statements quoted from the alpo.ge source tree. As
-reported in an independent verification record, the theorem \lean{riemannHypothesis}, with
-Mathlib's definition, has been machine-checked by several independent checkers
-(\S\ref{sec:verification}). What remains is the
-reading of the mathematical argument by experts, and the agreement of Mathlib's definitions with the
-classical ones.
+status label, and a script extracts the Lean statements quoted from the alpo.ge source tree. The
+Lean FRO and the Mathlib Initiative certify the proof of \lean{riemannHypothesis} as correct,
+statement and proof, and independent checkers accept it (\S\ref{sec:verification}). What remains
+is the mathematical community's reading and explanation of the argument.
 \end{abstract}
 
 \tableofcontents

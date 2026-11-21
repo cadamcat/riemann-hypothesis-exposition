@@ -2,10 +2,10 @@
 
 An annotated map of the architecture of the Lean 4 source tree, published with L. Alpöge's note of 20 November 2026, that contains a theorem `riemannHypothesis : RiemannHypothesis` (Mathlib's proposition).
 
-[Read the article (PDF)](https://github.com/cadamcat/riemann-hypothesis-exposition/releases/latest/download/riemann-hypothesis-exposition-article.pdf) · [Watch the film (4K, 8 min)](https://github.com/cadamcat/riemann-hypothesis-exposition/releases/download/v1.1.0/riemann-hypothesis-exposition-film-4k.mp4)
+[Read the article (PDF)](https://github.com/cadamcat/riemann-hypothesis-exposition/releases/latest/download/riemann-hypothesis-exposition-article.pdf) · [Watch the film (4K, 8 min)](https://github.com/cadamcat/riemann-hypothesis-exposition/releases/download/v1.2.0/riemann-hypothesis-exposition-film-4k.mp4)
 
 - Author: Yao Xu.
-- Version: v1.1.0 (article and narrated film).
+- Version: v1.2.0 (article and narrated film).
 - Date: 21 November 2026.
 - Readers: graduate students and research mathematicians. §1 is written for a general reader.
 
@@ -30,19 +30,19 @@ An annotated map of the architecture of the Lean 4 source tree, published with L
 Every mathematical claim in the article carries one of four labels:
 
 - **classical**: a published theorem or standard fact, with a citation.
-- **Lean (file:line)**: identifies a location in the Lean source. Where the article discusses a proof body, the label refers to the body as written. Section 10 reports the kernel replay of the compiled modules.
+- **Lean (file:line)**: identifies a location in the Lean source. Where the article discusses a proof body, the label refers to the body as written. Section 10 reports the certification of the proof and the independent checks.
 - **remark**: the author's own description in the note.
 - **interpretation**: our reading of a Lean statement, or of which published result it corresponds to. Declaration names are suggestive, but they are not evidence.
 
-**Verification status (Section 10).** An independent verification record by A. Sutherland (MIT; https://math.mit.edu/~drew/grh/, as of 21 November 2026, 09:30 UTC) reports the following:
-- all 175,187 modules compile;
-- the five headline theorems use only `propext`, `Classical.choice` and `Quot.sound`;
-- Lean's kernel replays every compiled module;
-- the independent kernels nanoda and con-leche accept the full exported proof.
+**Verification status (Section 10).** On 21 November 2026 the Lean FRO and the Mathlib Initiative issued a joint statement ([Lean verification of the Riemann Hypothesis](https://leanprover-community.github.io/blog/posts/riemann-hypothesis/)) certifying that the statement and the proof are correct. It gives four criteria and how each is met:
+- the statement is Mathlib's `RiemannHypothesis`, vetted by experts in Lean and number theory;
+- independent builders reproduced the same raw proof export;
+- two tools (`comparator`, `con-leche --compare`) match the proved theorem against a file that imports only Mathlib;
+- Lean's kernel and several independent checkers accept the export.
 
-Some runs were still going at that time. So `riemannHypothesis : RiemannHypothesis` (Mathlib's definition) has been machine-checked by several independent checkers, as that record reports.
+An independent verification record by A. Sutherland (MIT; https://math.mit.edu/~drew/grh/, as of 21 November 2026, 12:55 UTC) adds that all 175,187 modules compile and that the five headline theorems use only `propext`, `Classical.choice` and `Quot.sound`.
 
-Two things remain for expert reading: the mathematical argument itself, and the agreement of Mathlib's definitions with the classical ones. The article does not call the proof refereed.
+So `riemannHypothesis : RiemannHypothesis` (Mathlib's definition) has a Lean proof certified as correct, statement and proof. What remains is the mathematical community's reading and explanation of the argument. The article does not call the proof refereed.
 
 ## The film
 

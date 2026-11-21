@@ -19,14 +19,16 @@ Mathlib \cite{mathlib2020}, together with about 175{,}000 files of supporting ma
 
 Two questions follow, and this article keeps them apart.
 \begin{enumerate}
-\item \emph{Does the program accept the proof?} This is a mechanical check. An independent
-  verification record reports that the theorem, in Mathlib's form, has been machine-checked by
-  several independent checkers; some runs were still going (\S\ref{sec:verification}). Such a check
-  relies on the checkers and on Mathlib's definitions; whether those definitions agree with the
-  classical ones is a separate question, on which \S\ref{sec:verification} reports one check.
+\item \emph{Does the program accept the proof?} This is a mechanical check. The theorem has a Lean
+  proof that the Lean FRO and the Mathlib Initiative certify as correct, statement and proof, and
+  that independent checkers accept (\S\ref{sec:verification}). That the theorem states the classical
+  hypothesis is addressed by two of their criteria: experts vetted Mathlib's definition, and two
+  tools confirm that the theorem proved is exactly Mathlib's statement. \S\ref{sec:verification}
+  also reports an independent check through divisor-sum inequalities.
 \item \emph{What is the argument?} The source is far too large to read line by line. This article
   maps the statements and proof bodies supplied in the source, explains what the statements say,
-  and traces how the main pieces connect. The reading of the argument by experts remains.
+  and traces how the main pieces connect. What remains is the mathematical community's reading and
+  explanation of the argument.
 \end{enumerate}
 
 In outline the argument runs as follows. The reductions in the source lead to the assertion that no
@@ -43,6 +45,6 @@ mimicking the ``multiplicity'' in Stepanov's elementary proof of the Riemann hyp
 over finite fields \sttag{remark, p.~1 and item 8} \stc{bombieri-stepanov}.
 
 Each statement in this article carries a label saying where it comes from: a published theorem
-(\sttag{classical}); a location in the Lean source (\sttag{Lean}, with module replay reported in
-\S\ref{sec:verification}); the author's own description in
+(\sttag{classical}); a location in the Lean source (\sttag{Lean}: stated in the source; the proof is
+certified as reported in \S\ref{sec:verification}); the author's own description in
 the note (\sttag{remark}); or our reading of the source (\sttag{interpretation}).

@@ -46,513 +46,515 @@ The note says the proof was
 found working with Claude.
 
 11
-00:00:40,140 --> 00:00:43,820
-With the note came a proof that
-has since been checked by machine:
+00:00:40,140 --> 00:00:45,580
+With the note came a proof in Lean.
+On 21 November 2026,
 
 12
-00:00:44,520 --> 00:00:48,780
-the full build passes,
-it uses only Lean's three standard axioms,
+00:00:46,080 --> 00:00:49,960
+the Lean FRO and the Mathlib
+Initiative certified it as correct,
 
 13
-00:00:49,160 --> 00:00:51,470
-and several independent kernels accept it.
+00:00:50,860 --> 00:00:54,140
+statement and proof,
+and independent checkers accept it.
 
 14
-00:00:54,817 --> 00:00:57,757
+00:00:57,350 --> 00:01:00,290
 Where the real part of
 s is greater than one,
 
 15
-00:00:58,477 --> 00:01:01,677
+00:01:01,010 --> 00:01:04,210
 zeta of s is the sum of
 one over n to the power s.
 
 16
-00:01:02,437 --> 00:01:06,977
+00:01:04,970 --> 00:01:09,510
 It extends to the whole complex plane,
 with a single pole, at s equals one.
 
 17
-00:01:07,377 --> 00:01:13,257
+00:01:09,910 --> 00:01:15,790
 It vanishes at minus two, minus four,
 minus six, and so on: the trivial zeros.
 
 18
-00:01:14,277 --> 00:01:16,357
+00:01:16,810 --> 00:01:18,890
 Every other zero lies
 in the critical strip,
 
 19
-00:01:16,757 --> 00:01:18,997
+00:01:19,290 --> 00:01:21,530
 where the real part is
 between zero and one.
 
 20
-00:01:19,467 --> 00:01:22,477
+00:01:22,000 --> 00:01:25,010
 Here is the size of zeta over the strip,
 computed.
 
 21
-00:01:23,117 --> 00:01:26,287
+00:01:25,650 --> 00:01:28,820
 The first zeros sit at heights 14.13,
 
 22
-00:01:26,287 --> 00:01:29,777
+00:01:28,820 --> 00:01:32,310
 21.02 and 25.01,
 
 23
-00:01:30,257 --> 00:01:32,597
+00:01:32,790 --> 00:01:35,130
 each on the line where
 the real part is one half.
 
 24
-00:01:33,097 --> 00:01:37,867
+00:01:35,630 --> 00:01:40,400
 The Riemann hypothesis says that every
 non-trivial zero lies on this line.
 
 25
-00:01:38,367 --> 00:01:43,137
+00:01:40,900 --> 00:01:45,670
 Mathlib, the mathematical library written
 by Lean's community, states it this way:
 
 26
-00:01:43,877 --> 00:01:48,217
+00:01:46,410 --> 00:01:50,750
 every s where zeta vanishes, other
 than minus two, minus four and so on,
 
 27
-00:01:48,417 --> 00:01:50,927
+00:01:50,950 --> 00:01:53,460
 and other than one,
 has real part one half.
 
 28
-00:01:53,983 --> 00:01:59,603
+00:01:56,517 --> 00:02:02,137
 The Lean source is large:
 175,187 files in ten libraries.
 
 29
-00:02:01,063 --> 00:02:04,113
+00:02:03,597 --> 00:02:06,647
 Its root file, Main.lean,
 exports five theorems.
 
 30
-00:02:04,423 --> 00:02:07,023
+00:02:06,957 --> 00:02:09,557
 The first has as its type
 exactly Mathlib's proposition,
 
 31
-00:02:07,543 --> 00:02:11,803
+00:02:10,077 --> 00:02:14,337
 the Riemann hypothesis. The second states
 the same proposition in the source's own
 
 32
-00:02:11,803 --> 00:02:12,803
+00:02:14,337 --> 00:02:15,337
 words.
 
 33
-00:02:13,123 --> 00:02:15,283
+00:02:15,657 --> 00:02:17,817
 The other three concern
 Dirichlet L-functions.
 
 34
-00:02:15,743 --> 00:02:20,463
+00:02:18,277 --> 00:02:22,997
 A Dirichlet character modulo N, chi,
 is multiplicative, repeats with period N,
 
 35
-00:02:20,683 --> 00:02:22,983
+00:02:23,217 --> 00:02:25,517
 and is zero on numbers
 that share a factor with N.
 
 36
-00:02:23,503 --> 00:02:27,843
+00:02:26,037 --> 00:02:30,377
 Its L-function is the sum of chi of n
 over n to the s, continued like zeta.
 
 37
-00:02:28,963 --> 00:02:30,273
+00:02:31,497 --> 00:02:32,807
 Zeta is the case N equals one.
 
 38
-00:02:30,843 --> 00:02:32,823
+00:02:33,377 --> 00:02:35,357
 All five theorems rest on one proposition:
 
 39
-00:02:33,503 --> 00:02:37,683
+00:02:36,037 --> 00:02:40,217
 no Dirichlet L-function vanishes where the
 real part of s is greater than one half,
 
 40
-00:02:38,243 --> 00:02:40,653
+00:02:40,777 --> 00:02:43,187
 except at s equals one
 for a principal character.
 
 41
-00:02:41,373 --> 00:02:45,203
+00:02:43,907 --> 00:02:47,737
 The step from it to the five theorems
 is short and classical. For zeta,
 
 42
-00:02:45,403 --> 00:02:49,403
+00:02:47,937 --> 00:02:51,937
 the functional equation mirrors any
 non-trivial zero left of the line to a
 
 43
-00:02:49,403 --> 00:02:50,403
+00:02:51,937 --> 00:02:52,937
 zero right of it.
 
 44
-00:02:52,983 --> 00:02:55,843
+00:02:55,517 --> 00:02:58,377
 Below that proposition,
 the proof has two halves.
 
 45
-00:02:56,443 --> 00:02:59,183
+00:02:58,977 --> 00:03:01,717
 The analytic half works with
 primes through lambda of n,
 
 46
-00:02:59,603 --> 00:03:05,403
+00:03:02,137 --> 00:03:07,937
 the von Mangoldt function: log p when n is
 a power of a prime p, and zero otherwise.
 
 47
-00:03:06,283 --> 00:03:11,483
+00:03:08,817 --> 00:03:14,017
 The source sums lambda of n times
 x over n minus one, for n up to x,
 
 48
-00:03:11,703 --> 00:03:16,143
+00:03:14,237 --> 00:03:18,677
 then subtracts x log x and
 adds one plus gamma, times x;
 
 49
-00:03:16,783 --> 00:03:19,933
+00:03:19,317 --> 00:03:22,467
 gamma is Euler's constant.
 Call this G of x.
 
 50
-00:03:20,463 --> 00:03:22,803
+00:03:22,997 --> 00:03:25,337
 Classically, G has an explicit formula:
 
 51
-00:03:23,523 --> 00:03:26,783
+00:03:26,057 --> 00:03:29,317
 each non-trivial zero rho
 of zeta contributes a wave,
 
 52
-00:03:27,343 --> 00:03:29,723
+00:03:29,877 --> 00:03:32,257
 x to the rho over rho times rho minus one.
 
 53
-00:03:30,293 --> 00:03:35,923
+00:03:32,827 --> 00:03:38,457
 Here is the exact G, computed, against the
 waves of the first zeros. With more zeros,
 
 54
-00:03:36,203 --> 00:03:37,983
+00:03:38,737 --> 00:03:40,517
 they follow G ever more closely.
 
 55
-00:03:38,553 --> 00:03:42,143
+00:03:41,087 --> 00:03:44,677
 A zero with real part beta makes
 a wave of size x to the beta.
 
 56
-00:03:42,763 --> 00:03:46,303
+00:03:45,297 --> 00:03:48,837
 If every zero is on the line,
 G stays of size root x.
 
 57
-00:03:46,303 --> 00:03:49,943
+00:03:48,837 --> 00:03:52,477
 A zero to the right of the
 line would force larger swings.
 
 58
-00:03:50,543 --> 00:03:55,103
+00:03:53,077 --> 00:03:57,637
 The source turns this around, for suitable
 finite families of Dirichlet characters,
 
 59
-00:03:55,103 --> 00:04:01,063
+00:03:57,637 --> 00:04:03,597
 with their weighted prime sum. Take theta
 between zero and one, and delta positive.
 
 60
-00:04:01,903 --> 00:04:07,863
+00:04:04,437 --> 00:04:10,397
 If the sum stays below a constant times
 y to the theta on windows from Y to Y to
 
 61
-00:04:07,863 --> 00:04:10,803
+00:04:10,397 --> 00:04:13,337
 the one plus delta,
 for arbitrarily large Y,
 
 62
-00:04:11,283 --> 00:04:14,553
+00:04:13,817 --> 00:04:17,087
 then no L-function of the
 family vanishes right of theta.
 
 63
-00:04:15,123 --> 00:04:20,503
+00:04:17,657 --> 00:04:23,037
 The bound is one-sided and needed
 only on sparse windows. Classically,
 
 64
-00:04:21,063 --> 00:04:25,243
+00:04:23,597 --> 00:04:27,777
 one-sided bounds exclude zeros through
 positivity, as in Landau's theorem;
 
 65
-00:04:25,903 --> 00:04:29,193
+00:04:28,437 --> 00:04:31,727
 which positivity the source uses,
 the article leaves open.
 
 66
-00:04:29,863 --> 00:04:33,483
+00:04:32,397 --> 00:04:36,017
 The criterion is fed by a square-root
 bound stated in the source:
 
 67
-00:04:34,383 --> 00:04:37,063
+00:04:36,917 --> 00:04:39,597
 on the windows of suitably
 compatible auxiliary families,
 
 68
-00:04:37,503 --> 00:04:42,283
+00:04:40,037 --> 00:04:44,817
 the sum eventually stays below x to the
 one half plus a small multiple of epsilon.
 
 69
-00:04:42,283 --> 00:04:45,923
+00:04:44,817 --> 00:04:48,457
 The difficulty moves into
 producing those families.
 
 70
-00:04:48,983 --> 00:04:52,583
+00:04:51,517 --> 00:04:55,117
 Here is the top of the proof,
 as the source writes it.
 
 71
-00:04:53,903 --> 00:04:57,243
+00:04:56,437 --> 00:04:59,777
 The Riemann hypothesis rests
 on the every-character theorem.
 
 72
-00:04:58,063 --> 00:05:02,863
+00:05:00,597 --> 00:05:05,397
 On the left is the analytic half;
 on the right, the automorphic half,
 
 73
-00:05:03,283 --> 00:05:04,583
+00:05:05,817 --> 00:05:07,117
 which supplies the families.
 
 74
-00:05:05,203 --> 00:05:10,783
+00:05:07,737 --> 00:05:13,317
 Each box is one Lean declaration. Beneath
 them lie the ten libraries; the largest,
 
 75
-00:05:11,403 --> 00:05:16,153
+00:05:13,937 --> 00:05:18,687
 Development, has about 142,000
 files and 12 million lines.
 
 76
-00:05:16,753 --> 00:05:21,563
+00:05:19,287 --> 00:05:24,097
 The automorphic half rests on four
 main inputs, named here but not proved.
 
 77
-00:05:22,043 --> 00:05:26,183
+00:05:24,577 --> 00:05:28,717
 First, the window bound:
 lengths of Tate–Shafarevich groups, Sha,
 
 78
-00:05:26,563 --> 00:05:30,743
+00:05:29,097 --> 00:05:33,277
 from Galois cohomology, bounded over
 fields cut out of cyclotomic fields,
 
 79
-00:05:31,123 --> 00:05:32,373
+00:05:33,657 --> 00:05:34,907
 the fields of roots of unity.
 
 80
-00:05:32,773 --> 00:05:35,643
+00:05:35,307 --> 00:05:38,177
 Second,
 Galois representations for polarized,
 
 81
-00:05:36,343 --> 00:05:39,943
+00:05:38,877 --> 00:05:42,477
 regular algebraic cuspidal
 representations over CM fields. Third,
 
 82
-00:05:40,283 --> 00:05:43,863
+00:05:42,817 --> 00:05:46,397
 a form of the local Langlands
 correspondence for GL n. Fourth,
 
 83
-00:05:44,603 --> 00:05:47,133
+00:05:47,137 --> 00:05:49,667
 theta lifts between unitary groups,
 in a stable range.
 
 84
-00:05:47,603 --> 00:05:51,083
+00:05:50,137 --> 00:05:53,617
 Each has the shape of published theorems.
 Except for local Langlands,
 
 85
-00:05:51,603 --> 00:05:55,533
+00:05:54,137 --> 00:05:58,067
 how the stated form relates to them is a
 question the article leaves to experts.
 
 86
-00:05:55,993 --> 00:05:59,103
+00:05:58,527 --> 00:06:01,637
 Both halves meet in one theorem:
 the families arrive,
 
 87
-00:05:59,543 --> 00:06:01,323
+00:06:02,077 --> 00:06:03,857
 the square-root bound holds on windows,
 
 88
-00:06:01,723 --> 00:06:05,843
+00:06:04,257 --> 00:06:08,377
 and the criterion clears every primitive
 character's L-function right of one half.
 
 89
-00:06:06,583 --> 00:06:09,193
+00:06:09,117 --> 00:06:11,727
 Zeta is simply the case
 of the trivial character.
 
 90
-00:06:12,250 --> 00:06:13,910
+00:06:14,783 --> 00:06:16,443
 As the note puts it,
 
 91
-00:06:14,230 --> 00:06:19,310
+00:06:16,763 --> 00:06:21,843
 Stepanov's proof of the Riemann hypothesis
 for curves over finite fields uses a
 
 92
-00:06:19,310 --> 00:06:24,350
+00:06:21,843 --> 00:06:26,883
 divisor with multiplicity. Over the
 integers, multiplicity is hard to find;
 
 93
-00:06:24,990 --> 00:06:27,290
+00:06:27,523 --> 00:06:29,823
 it is something like
 differentiating whole numbers.
 
 94
-00:06:28,000 --> 00:06:32,230
+00:06:30,533 --> 00:06:34,763
 Its approach is to chain theta lifts,
 each one mimicking multiplicity.
 
 95
-00:06:32,850 --> 00:06:35,950
+00:06:35,383 --> 00:06:38,483
 For a von Mangoldt sum of length X,
 the note says,
 
 96
-00:06:36,610 --> 00:06:39,100
+00:06:39,143 --> 00:06:41,633
 Claude suggested a chain
 of about root X lifts.
 
 97
-00:06:39,850 --> 00:06:42,630
+00:06:42,383 --> 00:06:45,163
 In the source,
 the prime sum is exactly the note's,
 
 98
-00:06:43,190 --> 00:06:45,370
+00:06:45,723 --> 00:06:47,903
 and a single theta lift
 is a stated theorem.
 
 99
-00:06:46,330 --> 00:06:48,790
+00:06:48,863 --> 00:06:51,323
 The article has not located
 the chain or its length;
 
 100
-00:06:49,490 --> 00:06:51,480
+00:06:52,023 --> 00:06:54,013
 no name in the tree contains Stepanov.
 
 101
-00:06:54,550 --> 00:06:59,290
-An independent check of the source has
-now been reported. The full build passes,
+00:06:57,083 --> 00:06:59,543
+On 21 November 2026,
 
 102
-00:06:59,710 --> 00:07:02,070
-the proof uses only Lean's
-three standard axioms,
+00:07:00,063 --> 00:07:03,923
+the Lean FRO and the Mathlib Initiative
+certified that both are correct:
 
 103
-00:07:02,850 --> 00:07:06,850
-Lean's kernel replays every module,
-and independent kernels accept the proof.
+00:07:04,303 --> 00:07:08,103
+the statement and the proof.
+Experts vetted Mathlib's statement.
 
 104
-00:07:07,710 --> 00:07:11,730
-Andrew Sutherland of MIT reported
-this on 21 November 2026;
+00:07:09,063 --> 00:07:11,603
+Dozens of builders reproduced
+the same exported proof.
 
 105
-00:07:12,350 --> 00:07:13,460
-some runs are still going.
+00:07:12,363 --> 00:07:16,643
+Two tools matched the proved theorem
+to that statement. Several checkers,
 
 106
-00:07:13,970 --> 00:07:15,450
-These checks certify one thing:
+00:07:17,183 --> 00:07:19,283
+Lean's kernel among them,
+accept the proof.
 
 107
-00:07:16,190 --> 00:07:18,310
-Lean accepts this proof
-of exactly this statement.
+00:07:19,893 --> 00:07:24,183
+The certification covers both halves:
+the statement, Mathlib's definition,
 
 108
-00:07:18,830 --> 00:07:22,250
-It does not show that Mathlib's
-definitions mean the classical ones,
+00:07:24,663 --> 00:07:28,523
+is correct, and the proof of
+exactly that statement is valid.
 
 109
-00:07:22,250 --> 00:07:26,380
-and it does not explain the argument.
-Both need expert reading.
+00:07:29,423 --> 00:07:33,933
+It does not explain the argument. That is
+for mathematicians to read and explain.
 
 110
-00:07:26,930 --> 00:07:31,070
+00:07:34,673 --> 00:07:38,643
 On 20 November, Ravi Vakil posted
 on his blog an independent,
 
 111
-00:07:31,350 --> 00:07:35,570
+00:07:38,883 --> 00:07:43,403
 human-written manuscript of about
 940 pages by Alessandro Masullo,
 
 112
-00:07:36,290 --> 00:07:38,410
+00:07:43,423 --> 00:07:46,423
 claiming a proof of the
 generalized Riemann hypothesis;
 
 113
-00:07:39,170 --> 00:07:40,990
+00:07:47,123 --> 00:07:48,983
 Brian Conrad had reviewed it for months.
 
 114
-00:07:41,520 --> 00:07:45,410
-In Mathlib's form, the Riemann hypothesis
-now has a machine-checked proof.
+00:07:49,623 --> 00:07:53,503
+The Riemann hypothesis now has a
+Lean proof, certified as correct.
 
 115
-00:07:45,990 --> 00:07:49,290
-What remains open is the human question:
-what the argument is,
+00:07:54,123 --> 00:07:57,163
+What remains is for mathematicians:
+to read the argument,
 
 116
-00:07:49,550 --> 00:07:50,820
-and how much of it is needed.
+00:07:57,163 --> 00:07:58,843
+and to explain its ideas.
 

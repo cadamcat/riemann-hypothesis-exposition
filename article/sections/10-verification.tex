@@ -1,9 +1,10 @@
 \section{Verification status}\label{sec:verification}
 
-This section states what has been checked about the source, by whom, and what has not. The kernel
-results come from one independent verification record \cite{sutherland}, as of its update of
-21 November 2026, 09:30 UTC. The record says that it will be updated as its remaining checks
-finish.
+This section states what has been checked about the source, by whom, and what has not. It draws on
+two public sources: a joint statement by the Lean FRO and the Mathlib Initiative \cite{leanfro-mathlib}
+(\S\ref{sec:joint}), and an independent verification record \cite{sutherland-1255}, as of its update of
+21 November 2026, 12:55 UTC (\S\ref{sec:record}). The record says that it will be updated as its
+remaining checks finish.
 
 \paragraph{Static scan (done, by us).} A text scan of all 175{,}187 files reports no matches for the
 listed source patterns: \texttt{axiom}, \texttt{sorry}, \texttt{admit}, \texttt{native\_decide},
@@ -18,22 +19,64 @@ their number. The kernel checks such declarations like any other. The tree conta
 definition of \mathlib{RiemannHypothesis} or \mathlib{riemannZeta}. A text scan does not establish
 kernel acceptance; the checks below address it.
 
-\paragraph{The verification record.} A.~Sutherland (MIT) built the source and ran several kernel
-checks on it \cite{sutherland}. The record's source archive has the same SHA-256 hash as the archive
-this article reads (\S\ref{sec:reading}), and it uses Lean v4.33.1 and Mathlib v4.33.1 (commit
-\texttt{0df444a3}). Some checks run on the compiled modules. Others run on the exported proof (the
-output of \texttt{lean4export} on module \texttt{Main}) or compare it with an exported
-``challenge'': the five statements with \texttt{sorry} proofs, importing only Mathlib. In the
-record's words, con-leche's \texttt{-{}-compare} mode is ``an independent implementation of
-Comparator's statement matching''. Table~\ref{tab:verification} lists the checks and their results
-at that time.
+\subsection{The joint statement of the Lean FRO and the Mathlib Initiative}\label{sec:joint}
+
+On 21 November 2026 (13:55 UTC) the Lean FRO and the Mathlib Initiative published a joint statement,
+``Lean verification of the Riemann Hypothesis'', on the Lean community blog \cite{leanfro-mathlib}.
+It reports that the codebase depends directly only on Mathlib, and it certifies ``that both the
+statement and the proof of the Riemann Hypothesis are correct''. It gives four criteria, taken from
+a post on the Xena Project blog that it links (\nolinkurl{xenaproject.wordpress.com}, 12 November
+2026), and states that all four are satisfied. Table~\ref{tab:criteria} lists them with how the
+statement says each is met. For the record of individual checks, the statement points to the
+verification record of \S\ref{sec:record}.
 
 \begin{table}[ht]
 \centering\small
 \renewcommand{\arraystretch}{1.25}
-\caption{Checks reported in the verification record \cite{sutherland}, as of 21 November 2026,
-09:30 UTC. ``Export'' is the exported proof; nanoda and con-leche are independently written
-kernels.}\label{tab:verification}
+\caption{The four criteria of the joint statement \cite{leanfro-mathlib}, and how the statement
+says each is met (paraphrased).}\label{tab:criteria}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.27\linewidth} >{\raggedright\arraybackslash}X@{}}
+\toprule
+Criterion & How it is met, according to the statement\\
+\midrule
+1. Correct statement & It is Mathlib's \mathlib{RiemannHypothesis},
+  ``carefully vetted by experts in Lean and number theory''.\\
+2. Correct compilation & Dozens of people have reported that the codebase compiles
+  without errors, reproducing the same raw proof export file.\\
+3. The right theorem is proved & A file added by the community isolates the statement and
+  imports only Mathlib. Two independent tools, \texttt{comparator} and con-leche's
+  \texttt{-{}-compare} mode, compared it with the theorem proved in the library; both confirm that
+  the theorem proved is exactly Mathlib's statement.\\
+4. Valid proof & The exported proof was checked by several proof checkers: Lean's
+  official kernel, the con-leche and con-ron checkers, and several independent checkers contributed
+  by third parties and written in different programming languages. con-leche and con-ron come with
+  a formal proof, relative to set theory, that they cannot accept a false proof; the statement says
+  that this addresses concerns that Lean's logic itself might have flaws. The checks ran on an inert
+  export of the proof, out of reach of any malicious code that the Lean sources might contain.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\FloatBarrier
+\subsection{The verification record}\label{sec:record}
+
+A.~Sutherland (MIT) built the source and ran several kernel checks on it \cite{sutherland-1255}. The
+record's source archive has the same SHA-256 hash as the archive this article reads
+(\S\ref{sec:reading}), and it uses Lean v4.33.1 and Mathlib v4.33.1 (commit \texttt{0df444a3}). Some
+checks run on the compiled modules. Others run on the exported proof (the output of
+\texttt{lean4export} on module \texttt{Main}) or compare it with an exported ``challenge'': the five
+statements with \texttt{sorry} proofs, importing only Mathlib. In the record's words, con-leche's
+\texttt{-{}-compare} mode is ``an independent implementation of Comparator's statement matching''.
+Table~\ref{tab:verification} lists the checks and their results as of the 12:55 UTC update. The
+table of checks is the same as at the 09:30 UTC update \cite{sutherland}; the record reports no
+further check as finished.
+
+\begin{table}[ht]
+\centering\small
+\renewcommand{\arraystretch}{1.25}
+\caption{Checks reported in the verification record \cite{sutherland-1255}, as of 21 November 2026,
+12:55 UTC (unchanged since the 09:30 UTC update). ``Export'' is the exported proof; nanoda and
+con-leche are independently written kernels.}\label{tab:verification}
 \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X l >{\raggedright\arraybackslash}X@{}}
 \toprule
 Check & Result & Detail\\
@@ -59,33 +102,86 @@ Lean default and paranoid kernels on the export & running & no verdict yet\\
 \end{tabularx}
 \end{table}
 
-At that time two of the record's entries for the main proof were still running: the Lean default
-and paranoid kernels on the export, and the end-to-end \texttt{lake comparator} run. Three older binaries gave no verdict: the
-con-leche and con-ron bundled with Lean v4.36.0 declined (exit 2, not a rejection), because they do
-not support one reflexive inductive type in the proof, and the lean4lean bundled with Lean v4.36.0
-cannot read a v4.33 core library.
+At 12:55 UTC two of the record's entries for the main proof were still running: the Lean default
+and paranoid kernels on the export, and the end-to-end \texttt{lake comparator} run. Three older
+binaries gave no verdict: the con-leche and con-ron bundled with Lean v4.36.0 declined (exit 2, not
+a rejection), because they do not support one reflexive inductive type in the proof, and the
+lean4lean bundled with Lean v4.36.0 cannot read a v4.33 core library.
 
-The record names the verified theorem: \lean{riemannHypothesis}~:~\mathlib{RiemannHypothesis} in
-\texttt{Main.lean}, where \mathlib{RiemannHypothesis} is Mathlib's own definition, and four further
-theorems, among them the analogous statement for all Dirichlet $L$-functions. In the record,
-``GRH'' means Dirichlet $L$-functions only.
+The record now lists the five theorems proved in \texttt{Main.lean} (Table~\ref{tab:five}), with
+their statements exactly as they appear in the challenge file, which imports only Mathlib. All the
+mathematical notions in them (\mathlib{riemannZeta}, \mathlib{DirichletCharacter},
+\mathlib{DirichletCharacter.LFunction}, \mathlib{IsPrimitive}) are Mathlib's.
+
+\begin{table}[H]
+\centering\small
+\renewcommand{\arraystretch}{1.25}
+\caption{The five theorems of \texttt{Main.lean} as the record lists them \cite{sutherland-1255}
+(its descriptions, paraphrased).}\label{tab:five}
+\begin{tabularx}{\linewidth}{@{}l >{\raggedright\arraybackslash}X@{}}
+\toprule
+Theorem & What it states, according to the record\\
+\midrule
+\lean{riemannHypothesis} & The Riemann hypothesis with Mathlib's definition: every zero of $\zeta$
+  other than the trivial zeros $-2,-4,-6,\dots$ has real part $\tfrac12$; $s\ne1$ is excluded
+  because Mathlib assigns $\zeta$ a conventional value at its pole.\\
+\lean{riemannZeta_eq_zero_re} & The same statement in the submission's own words; Lean accepts the
+  two as equal by definition.\\
+\lean{LFunction_ne_zero_of_half_lt_re} & For every modulus $N\ge1$ and every Dirichlet character
+  $\chi$ modulo $N$, primitive or not, $L(\chi,s)\ne0$ for $\operatorname{Re}s>\tfrac12$, except
+  for the trivial character at $s=1$.\\
+\lean{LFunction_eq_zero_re} & Zeros of every Dirichlet $L$-function in the critical strip lie on
+  the critical line.\\
+\lean{LFunction_eq_zero_re_of_isPrimitive} & The same for primitive characters, the form in which
+  the generalized Riemann hypothesis for Dirichlet $L$-functions is usually stated.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\noindent\begin{minipage}{\linewidth}
+The statements, as given in the record:
+\begin{Verbatim}
+def RiemannHypothesis : Prop :=
+  ∀ (s : ℂ) (_ : riemannZeta s = 0) (_ : ¬∃ n : ℕ, s = -2 * (n + 1)) (_ : s ≠ 1), s.re = 1 / 2
+theorem riemannHypothesis : RiemannHypothesis
+
+theorem riemannZeta_eq_zero_re :
+  ∀ s : ℂ, riemannZeta s = 0 → (¬∃ n : ℕ, s = -2 * ((n : ℂ) + 1)) → s ≠ 1 → s.re = 1 / 2
+
+theorem LFunction_ne_zero_of_half_lt_re :
+  ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N) (s : ℂ),
+    1 / 2 < s.re → (χ ≠ 1 ∨ s ≠ 1) → DirichletCharacter.LFunction χ s ≠ 0
+
+theorem LFunction_eq_zero_re :
+  ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N) (s : ℂ),
+    0 < s.re → s.re < 1 → DirichletCharacter.LFunction χ s = 0 → s.re = 1 / 2
+
+theorem LFunction_eq_zero_re_of_isPrimitive :
+  ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), χ.IsPrimitive →
+    ∀ s : ℂ, 0 < s.re → s.re < 1 → DirichletCharacter.LFunction χ s = 0 → s.re = 1 / 2
+\end{Verbatim}
+\end{minipage}
+
+The record keeps a scope remark: ``GRH'' there means Dirichlet $L$-functions, for all moduli and all
+characters. Dedekind zeta functions, Hecke $L$-functions and automorphic $L$-functions in general are
+not among the statements that were checked.
 
 Sutherland built the source on unsandboxed cloud machines by invoking Lean directly with the inputs
 that Lake supplies. The checked export came from that build. The complete per-module compiled-file
 manifest depends on the build path because Lean v4.33.1 stores absolute source paths with linter
 messages. The record identifies the export hash as the cross-build comparison target and leaves
 open whether exports can contain source paths. The full comparison of compiled files with a Lake
-build and the export-hash comparison with a sandboxed Lake build remain open. The record adds: ``A passing
-check shows that the formal statements, as written in Lean against Mathlib's definitions, follow
-from the three standard axioms according to the kernels used. It relies on those kernels and on
-Mathlib's definitions being what they are intended to be.''
+build and the export-hash comparison with a sandboxed Lake build remain open in the record. The
+record adds: ``A passing check shows that the formal statements, as written in Lean against
+Mathlib's definitions, follow from the three standard axioms according to the kernels used. It
+relies on those kernels and on Mathlib's definitions being what they are intended to be.''
 
 \FloatBarrier
 \paragraph{Checks of two divisor-sum inequalities.} The record also combines the proof with
 Robin1984 (\texttt{kimihiro64/Robin1984}, commit \texttt{acab1a3}), an independent formalization of
-Robin's and Lagarias's criteria on the same Lean and Mathlib versions \cite{sutherland}. Importing
-both gives two theorems about the divisor sum, with no hypotheses and no mention of $\zeta$. As
-stated in the record:
+Robin's and Lagarias's criteria on the same Lean and Mathlib versions \cite{sutherland-1255}.
+Importing both gives two theorems about the divisor sum, with no hypotheses and no mention of
+$\zeta$. As stated in the record:
 
 \noindent\begin{minipage}{\linewidth}
 \begin{Verbatim}
@@ -117,15 +213,35 @@ statements still rely on Mathlib's definitions of the divisor sum, Euler's const
 numbers, \texttt{exp} and \texttt{log}, and on the Robin1984 proof, which is why that proof was put
 through the same checks.''
 
-\paragraph{Other public verification efforts.} Not surveyed in this article.
+\subsection{What the joint statement does not report}\label{sec:notreported}
 
-\paragraph{Status.} The source's theorem \lean{riemannHypothesis}~:~\mathlib{RiemannHypothesis}
-(Mathlib's definition) has been machine-checked by several independent checkers, as reported in the
-record \cite{sutherland}. A \sttag{Lean} label identifies a location in the Lean source. The record
-reports kernel replay of every compiled module. What
-remains is the reading of the mathematical argument by experts, and the agreement of Mathlib's
-definitions with the classical ones; the Robin--Lagarias check above bears on the second. This
-article maps and explains the argument; it does not judge it.
+The joint statement is issued in the name of the two organizations and names no individual
+signatories. It does not report three things that a reader might look for, and this article does
+not supply them by inference.
+\begin{itemize}
+\item \emph{An axiom check.} The statement lists none. The verification record does:
+  \texttt{\#print axioms} for the five theorems reports \texttt{propext}, \texttt{Classical.choice}
+  and \texttt{Quot.sound} only (Table~\ref{tab:verification}).
+\item \emph{Identifiers.} The statement gives no hash of the source archive or of the export, and no
+  toolchain (Lean or Mathlib version). The record gives both.
+\item \emph{A human reading of the argument.} The statement describes none. It closes by looking
+  forward to the activity in the mathematical community that will ``help explain the new ideas in
+  this proof''.
+\end{itemize}
+
+\subsection{Status}\label{sec:status}
+
+The theorem \lean{riemannHypothesis}~:~\mathlib{RiemannHypothesis} has a Lean proof that the Lean
+FRO and the Mathlib Initiative certify as correct, statement and proof \cite{leanfro-mathlib}, and
+that independent checkers accept (\S\S\ref{sec:joint}--\ref{sec:record}). That the theorem states the
+Riemann hypothesis is addressed by the statement's criterion~1 (expert vetting of Mathlib's
+definition) and criterion~3 (the comparison tools); the Robin--Lagarias check of \S\ref{sec:record}
+is independent support, through statements that do not mention $\zeta$. A \sttag{Lean} label marks a
+statement in the source; the proof is certified as reported in this section. What remains is the
+mathematical community's reading and explanation of the argument, which the statement itself looks
+forward to. This article maps and explains the argument; it does not judge it.
+
+\paragraph{Other public verification efforts.} Not surveyed in this article.
 
 \paragraph{Context.} On 20 November 2026 Ravi Vakil posted on his blog an independent,
 human-written manuscript of about 940 pages by Alessandro Masullo, claiming a proof of the
